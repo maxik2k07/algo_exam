@@ -1,0 +1,3608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALGO — GRADUATION</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Bagel+Fat+One&family=Bungee+Shade&family=Bungee&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   GRADUATION — sky, clouds, a flying bear
+   original composition — not a reproduction
+═══════════════════════════════════════════ */
+
+:root{
+  --sky-top:   #4a1a6b;   /* deep violet-purple */
+  --sky-mid1:  #8b2d7e;   /* magenta-purple */
+  --sky-mid2:  #d94977;   /* pink-rose */
+  --sky-mid3:  #ff7a5c;   /* coral */
+  --sky-low:   #ff9a5a;   /* orange */
+  --sky-bot:   #2a0e4a;   /* deep night purple (bottom of page) */
+  --pink: #ff5ea0;
+  --peach: #ff9a5a;
+  --gold: #ffd24d;
+  --violet: #6a2d9e;
+  --ink: #1a0830;
+  --cream: #fff4e8;
+  --cloud-a: #ffd6da;
+  --cloud-b: #e8a8c4;
+  --cloud-c: #c57ab0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+  overflow-x:hidden;
+  background: var(--sky-top);
+  font-family:'Inter', 'DM Sans', sans-serif;
+  color: var(--ink);
+  scroll-behavior: smooth;
+}
+
+/* main sky gradient: sunset violet-pink-orange, shifting subtly */
+.sky-backdrop{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  background:
+    linear-gradient(180deg,
+      #3a0f5c 0%,
+      #5a1a7d 6%,
+      #7b2188 12%,
+      #a32a84 20%,
+      #c93877 30%,
+      #e85574 42%,
+      #f6755e 55%,
+      #ff8f54 68%,
+      #e0628b 80%,
+      #6a2482 92%,
+      #2a0e4a 100%);
+  z-index:-2;
+  background-size: 100% 100%;
+  /* static gradient — full-screen filter animation removed (was the main scroll-jank source) */
+}
+
+/* soft painterly haze layer on top of gradient */
+.sky-haze{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(255,180,200,.35), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 20% 30%, rgba(120,40,130,.35), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 60% 60%, rgba(255,150,100,.25), transparent 70%);
+  mix-blend-mode: screen;
+  animation: hazeshift 22s ease-in-out infinite alternate;
+}
+@keyframes hazeshift{
+  0%   { transform: translate3d(0,0,0) scale(1); opacity:.9; }
+  100% { transform: translate3d(-30px, 20px, 0) scale(1.08); opacity:1; }
+}
+
+/* subtle grain */
+body::after{
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:200;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  opacity:.14; mix-blend-mode: overlay;
+}
+
+/* ── FIXED HEADER STRIP ── */
+.top-bar{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 28px;
+  font-family:'Space Mono', monospace;
+  font-size:.68rem; letter-spacing:3px; text-transform:uppercase;
+  color:#fff; mix-blend-mode: difference;
+  pointer-events:none;
+}
+.top-bar > *{pointer-events:auto}
+.brand{
+  font-family:'Bagel Fat One', 'Rubik Mono One', sans-serif;
+  font-size:1.4rem; letter-spacing:1px;
+  -webkit-text-stroke: 1px #1a0830;
+}
+.top-bar .meta{display:flex; gap:18px; opacity:.9}
+.lang-link{ pointer-events:auto; color:#fff; text-decoration:none; font-weight:700;
+  border:1px solid rgba(255,255,255,.55); padding:2px 9px; border-radius:100px;
+  letter-spacing:1px; transition:background .2s; }
+.lang-link:hover{ background:rgba(255,255,255,.18); }
+
+/* ═══════════════════════════════════════════
+   HERO — flying bear intro
+═══════════════════════════════════════════ */
+.hero{
+  position:relative;
+  height:100vh;
+  min-height:720px;
+  width:100%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* distant hills/mountains at horizon */
+.horizon{
+  position:absolute; bottom:0; left:0; right:0;
+  height:42%;
+  pointer-events:none;
+  z-index:1;
+}
+
+.hero-title{
+  position:absolute;
+  top:5.5%;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:4;
+  pointer-events:none;
+}
+.hero-title h1{
+  font-family:'Bagel Fat One', sans-serif;
+  font-size:clamp(4.5rem, 18vw, 14rem);
+  line-height:.88;
+  color:#ff4ea3;
+  letter-spacing:-2px;
+  -webkit-text-stroke: 3px #1a0830;
+  text-shadow:
+    6px 6px 0 #1a0830,
+    -1px -1px 0 #fff;
+}
+.hero-title .tag{
+  font-family:'Bungee', sans-serif;
+  font-size:clamp(.62rem, 1.15vw, 1rem);
+  margin-top:16px;
+  color:#ffe9b0;
+  letter-spacing:2px;
+  text-shadow: 2px 2px 0 #1a0830;
+  text-transform: uppercase;
+  white-space:nowrap;
+}
+@media (max-width:640px){
+  .hero-title{ top:11%; width:92vw; }
+  .hero-title .tag{ white-space:normal; max-width:90vw; }
+}
+.hero-caption{
+  position:absolute;
+  bottom:2.5%;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:4;
+  text-align:center;
+  color:#fff;
+  font-family:'Space Mono', monospace;
+  font-size:.7rem;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  pointer-events:none;
+  text-shadow:0 2px 6px rgba(0,0,0,.3);
+}
+.hero-caption .arrow{
+  display:block;
+  font-size:1.6rem;
+  margin-top:10px;
+  animation: bob 1.8s ease-in-out infinite;
+}
+@keyframes bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(8px)}
+}
+
+/* BEAR (original mascot, SVG) — interactive */
+.bear-stage{
+  position:absolute;
+  z-index:3;
+  width:min(41vw, 470px);
+  height:min(41vw, 470px);
+  top:auto; bottom:3%; left:50%;
+  transform: translateX(-50%);
+  pointer-events:none;
+  will-change: transform;
+}
+.bear-stage svg{
+  width:100%; height:100%;
+  pointer-events:auto;
+  cursor: grab;
+  filter: drop-shadow(0 20px 25px rgba(30,10,40,.25));
+  animation: float 6s ease-in-out infinite;
+}
+.bear-stage:active svg{cursor:grabbing}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-18px) rotate(2deg)}
+}
+
+/* sparkle stars around bear */
+.sparkle{
+  position:absolute;
+  color:#fff;
+  font-family:'Bungee',sans-serif;
+  font-size:1.2rem;
+  text-shadow:0 0 8px rgba(255,255,255,.6);
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.3; transform:scale(.8)}
+  50%{opacity:1; transform:scale(1.1)}
+}
+
+/* ═══════════════════════════════════════════
+   CLOUDS SECTION
+═══════════════════════════════════════════ */
+.clouds-section{
+  position:relative;
+  width:100%;
+  /* height grows with number of clouds; set via --ch from JS */
+  height: var(--ch, 3800px);
+  overflow:visible;
+  z-index:2;
+}
+
+.clouds-section::before{
+  content:'';
+  position:absolute;
+  top:-140px; left:0; right:0; height:180px;
+  background: linear-gradient(180deg, rgba(247,183,212,0) 0%, rgba(255,211,140,.0) 40%, rgba(255,227,160,0) 100%);
+  pointer-events:none;
+}
+
+.section-label{
+  position:absolute;
+  left:50%; transform:translateX(-50%);
+  top: 40px;
+  z-index:5;
+  text-align:center;
+  color:#fff;
+  pointer-events:none;
+  mix-blend-mode: overlay;
+}
+.section-label .kicker{
+  font-family:'Space Mono', monospace;
+  font-size:.7rem; letter-spacing:6px; text-transform:uppercase;
+  opacity:.85;
+}
+.section-label h2{
+  font-family:'Bagel Fat One', sans-serif;
+  font-size:clamp(2.4rem, 6vw, 4.4rem);
+  color:#fff;
+  letter-spacing:-1px;
+  margin-top:8px;
+  -webkit-text-stroke: 2px #1a0830;
+  text-shadow:4px 4px 0 #1a0830;
+}
+
+/* Individual cloud — painterly soft blob */
+.cloud{
+  position:absolute;
+  width:300px;
+  height:180px;
+  cursor:pointer;
+  transition: transform .35s cubic-bezier(.2,.9,.3,1.2), filter .35s;
+  filter: drop-shadow(0 18px 30px rgba(40,10,60,.35));
+}
+.cloud-svg{
+  width:100%; height:100%;
+  display:block;
+  filter: blur(.6px);
+}
+.cloud:hover{
+  transform: translateY(-10px) scale(1.08);
+  filter: drop-shadow(0 24px 40px rgba(255,100,150,.4)) brightness(1.1);
+  z-index: 20;
+}
+.cloud .cnum{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  font-family:'Bagel Fat One', sans-serif;
+  font-size:3.6rem;
+  color: #fff;
+  letter-spacing:-1px;
+  -webkit-text-stroke: 3px #1a0830;
+  text-shadow:
+    4px 4px 0 #1a0830,
+    0 0 20px rgba(255,200,230,.8);
+  pointer-events:none;
+  z-index:3;
+}
+.cloud .clabel{
+  position:absolute;
+  bottom: -14px;
+  left:50%;
+  transform:translateX(-50%) translateY(-4px);
+  white-space:nowrap;
+  background: #1a0830;
+  color:#ffd24d;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-family:'Bungee', sans-serif;
+  font-size:.58rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  opacity:0;
+  transition: opacity .25s, transform .25s;
+  pointer-events:none;
+  max-width: 280px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  border: 2px solid #ff5ea0;
+  z-index:4;
+}
+.cloud:hover .clabel{
+  opacity:1;
+  transform:translateX(-50%) translateY(6px);
+}
+
+/* iridescent drift — each cloud's gradient slowly animates */
+.cloud.drift{
+  animation: drift var(--dur,8s) ease-in-out infinite;
+  animation-delay: var(--delay,0s);
+}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(var(--scale,1))}
+  33%{transform:translate(var(--dx,28px),-18px) scale(var(--scale,1))}
+  66%{transform:translate(calc(var(--dx,28px) * -1),-8px) scale(var(--scale,1))}
+}
+
+/* cloud fill — per-cloud hue-rotate filter animation removed for scroll performance */
+.cloud-svg .cloud-body{ transform-origin: center; }
+
+/* small birds / planes silhouettes — original */
+.birds{
+  position:absolute;
+  top:0; left:0; right:0; height:100%;
+  pointer-events:none;
+  z-index:1;
+  overflow:hidden;
+}
+.bird{
+  position:absolute;
+  font-family:'Bungee',sans-serif;
+  color: rgba(30,20,40,.4);
+  font-size:.9rem;
+}
+
+/* floor sparkle confetti */
+.confetti{
+  position:absolute;
+  width:10px; height:10px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  opacity:.7;
+  animation: conf 4s linear infinite;
+}
+@keyframes conf{
+  0%{transform: rotate(0) translateY(0)}
+  100%{transform: rotate(720deg) translateY(40px)}
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER after clouds
+═══════════════════════════════════════════ */
+.footer{
+  position:relative;
+  z-index:3;
+  padding:140px 32px 80px;
+  text-align:center;
+  color:#dfe8ff;
+}
+.footer h3{
+  font-family:'Bagel Fat One', sans-serif;
+  font-size:clamp(2.4rem, 7vw, 5rem);
+  color:#ff4ea3;
+  letter-spacing:-1px;
+  margin-bottom:16px;
+  -webkit-text-stroke: 2px #1a0830;
+  text-shadow:5px 5px 0 #1a0830;
+}
+.footer p{
+  font-family:'Inter', sans-serif;
+  font-size:1.05rem;
+  color:#f0d8ee;
+  max-width:560px;
+  margin:0 auto 26px;
+  line-height:1.6;
+}
+.footer .meta-line{
+  font-family:'Space Mono', monospace;
+  font-size:.65rem;
+  letter-spacing:3px;
+  color:#8ba0c8;
+  text-transform:uppercase;
+  padding-top:30px;
+  border-top:1px solid rgba(255,255,255,.1);
+  max-width:400px;
+  margin: 40px auto 0;
+}
+
+/* stars field in footer */
+.stars{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+.star{
+  position:absolute;
+  width:2px; height:2px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 0 6px #fff;
+  animation: tw 3s ease-in-out infinite;
+}
+@keyframes tw{
+  0%,100%{opacity:.3}
+  50%{opacity:1}
+}
+
+/* ═══════════════════════════════════════════
+   TICKET READER — full-screen overlay
+═══════════════════════════════════════════ */
+.reader{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background: #fff7e8;
+  display:none;
+  overflow-y:auto;
+}
+.reader.open{display:block}
+
+.reader-topbar{
+  position:sticky; top:0; z-index:10;
+  background: var(--ink);
+  color:#fff;
+  padding: 14px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom: 4px solid var(--gold);
+}
+.reader-topbar .r-brand{
+  font-family:'Bungee', sans-serif;
+  font-size:1rem;
+  letter-spacing:1px;
+  display:flex; align-items:center; gap:12px;
+}
+.r-brand .chip{
+  background: var(--gold);
+  color: var(--ink);
+  padding:3px 10px;
+  border-radius:100px;
+  font-size:.65rem;
+  letter-spacing:3px;
+}
+.reader-topbar .r-close{
+  background: var(--pink);
+  color:#fff;
+  border:none;
+  padding: 10px 22px;
+  border-radius:100px;
+  font-family:'Bungee', sans-serif;
+  font-size:.7rem;
+  letter-spacing:2px;
+  cursor:pointer;
+  transition: transform .15s, background .2s;
+}
+.reader-topbar .r-close:hover{background: var(--violet); transform:scale(1.05)}
+
+/* cloud strip navigation across top */
+.cloud-strip{
+  display:flex; gap:6px;
+  overflow-x:auto;
+  padding: 10px 18px;
+  background: linear-gradient(180deg, #ffe0ea, #ffeed2);
+  border-bottom: 2px solid #1a1226;
+  scrollbar-width: thin;
+}
+.cs-btn{
+  flex-shrink:0;
+  min-width:44px;
+  padding:6px 12px;
+  background:#fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 100px;
+  font-family:'Bungee', sans-serif;
+  font-size:.72rem;
+  cursor:pointer;
+  transition: transform .15s, background .2s;
+}
+.cs-btn:hover{background:var(--gold); transform:translateY(-2px)}
+.cs-btn.active{background: var(--ink); color: var(--gold)}
+
+.ticket-wrap{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 28px 120px;
+  color: var(--ink);
+}
+
+.ticket-head{
+  margin-bottom: 30px;
+  padding-bottom: 18px;
+  border-bottom: 3px solid var(--ink);
+  display:flex; flex-direction:column; gap:8px;
+}
+.ticket-num{
+  display:inline-block;
+  align-self:flex-start;
+  background: var(--ink);
+  color: var(--gold);
+  font-family:'Space Mono', monospace;
+  font-size:.62rem;
+  letter-spacing:4px;
+  padding:5px 14px;
+  border-radius:100px;
+  text-transform:uppercase;
+}
+.ticket-title{
+  font-family:'Bungee', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  color: var(--ink);
+  line-height:1.05;
+  letter-spacing:-.5px;
+  text-transform: uppercase;
+}
+
+.ticket-question-block{
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-left: 10px solid var(--pink);
+  border-radius: 4px;
+  padding: 18px 22px;
+  margin-bottom: 36px;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.ticket-question-label{
+  font-family:'Space Mono', monospace;
+  font-size:.62rem;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color: var(--pink);
+  margin-bottom: 6px;
+}
+.ticket-question-text{
+  font-family:'Libre Caslon Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.sec{margin-bottom: 34px}
+.sec-h{
+  font-family:'Bungee', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 12px;
+  padding: 8px 0 8px 18px;
+  border-left: 6px solid var(--gold);
+  background: linear-gradient(90deg, rgba(255,210,77,.2) 0%, transparent 60%);
+}
+.sec-b{
+  font-family:'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #2a1d3a;
+  font-weight: 400;
+}
+.sec-b strong, .hw{color: var(--ink); font-weight: 700}
+.ha{
+  color: var(--violet);
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  font-size: .9em;
+  background: rgba(123,91,212,.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+pre.code{
+  background: var(--ink);
+  color: #ffe7b8;
+  border-radius: 6px;
+  padding: 18px 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: .78rem;
+  line-height: 1.7;
+  margin: 14px 0;
+  overflow-x: auto;
+  white-space: pre;
+  box-shadow: 6px 6px 0 rgba(26,18,38,.25);
+  border: 2px solid var(--ink);
+  border-top: 6px solid var(--gold);
+}
+pre.code::-webkit-scrollbar{height: 4px}
+pre.code::-webkit-scrollbar-thumb{background: var(--gold)}
+
+table.cxt{
+  width:100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  border: 2px solid var(--ink);
+  background:#fff;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+table.cxt th{
+  background: var(--ink);
+  color: var(--gold);
+  padding: 10px 14px;
+  font-family: 'Bungee', sans-serif;
+  font-size: .75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 2px solid var(--gold);
+}
+table.cxt td{
+  padding: 10px 14px;
+  font-family:'DM Sans', sans-serif;
+  font-size: .92rem;
+  color: #2a1d3a;
+  border-bottom: 1px solid rgba(26,18,38,.1);
+  border-right: 1px solid rgba(26,18,38,.1);
+}
+table.cxt tr:last-child td{border-bottom: none}
+table.cxt tr:nth-child(even){background: rgba(255,210,77,.08)}
+
+.gloss{
+  background: linear-gradient(135deg, #e8dcff 0%, #ffe5ee 100%);
+  border: 2px solid var(--ink);
+  padding: 22px 26px;
+  margin: 28px 0;
+  box-shadow: 6px 6px 0 var(--ink);
+  border-radius: 4px;
+}
+.gloss-t{
+  font-family:'Bungee', sans-serif;
+  font-size: .95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px dashed var(--ink);
+}
+.gloss-row{
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dotted rgba(26,18,38,.2);
+}
+.gloss-row:last-child{border-bottom: none}
+.gloss-k{
+  font-family:'Space Mono', monospace;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--violet);
+}
+.gloss-v{
+  font-family:'DM Sans', sans-serif;
+  font-size: .92rem;
+  color: #2a1d3a;
+  line-height:1.5;
+}
+
+.quiz{
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  padding: 28px 28px 24px;
+  margin-top: 36px;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.quiz-title{
+  font-family:'Bungee', sans-serif;
+  font-size: 1.3rem;
+  color: var(--ink);
+  margin-bottom: 22px;
+  padding-bottom: 10px;
+  border-bottom: 4px solid var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.qblock{margin-bottom: 28px}
+.qblock:last-child{margin-bottom: 0}
+.qqtext{
+  font-family:'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+.qopts{display: flex; flex-direction: column; gap: 8px}
+.qopt{
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .92rem;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: all .15s;
+  width: 100%;
+}
+.qopt:hover:not(:disabled){background: var(--gold); transform: translateX(4px)}
+.qopt:disabled{cursor: default}
+.qopt.correct{background: #9fe6a6; border-color: #1a5528}
+.qopt.wrong{background: #ffb3c0; border-color: #8a1230}
+.qopt.reveal{opacity: .5}
+.qletter{
+  font-family:'Bungee', sans-serif;
+  font-size: .8rem;
+  background: var(--ink);
+  color: var(--gold);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.qopt.correct .qletter{background: #1a5528; color: #fff}
+.qopt.wrong .qletter{background: #8a1230; color: #fff}
+.qfb{
+  display: none;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-family:'DM Sans', sans-serif;
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.qfb.show{display: block}
+.qfb.correct{background: #9fe6a6; color: #1a5528; border-left: 4px solid #1a5528}
+.qfb.wrong{background: #ffb3c0; color: #8a1230; border-left: 4px solid #8a1230}
+
+.arrows{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 3px solid var(--ink);
+}
+.arrow-btn{
+  background: var(--ink);
+  color: var(--gold);
+  border: none;
+  padding: 14px 26px;
+  border-radius: 100px;
+  font-family:'Bungee', sans-serif;
+  font-size: .78rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform .15s, background .2s;
+}
+.arrow-btn:hover:not(:disabled){
+  background: var(--pink);
+  transform: translateY(-3px);
+}
+.arrow-btn:disabled{opacity: .3; cursor: default}
+
+/* mobile */
+@media (max-width: 700px){
+  .cloud{width: 200px; height: 120px}
+  .cloud .cnum{font-size: 2rem}
+  .bear-stage{width: 80vw; height: 80vw}
+  .gloss-row{grid-template-columns: 1fr; gap: 2px}
+  .ticket-wrap{padding: 30px 18px 80px}
+}
+
+/* ═══════════════════════════════════════════
+   VIVID SKY — aurora beams & extra shimmer
+═══════════════════════════════════════════ */
+.sky-aurora{
+  position:fixed; inset:0;
+  pointer-events:none; z-index:-1;
+  overflow:hidden;
+}
+.sky-aurora::before{
+  content:'';
+  position:absolute;
+  width:90vw; height:65vh;
+  top:-15%; left:5%;
+  border-radius:50%;
+  background: radial-gradient(ellipse, rgba(255,80,200,.45) 0%, transparent 70%);
+  mix-blend-mode:screen;
+  animation: aurA 9s ease-in-out infinite alternate;
+}
+.sky-aurora::after{
+  content:'';
+  position:absolute;
+  width:70vw; height:80vh;
+  bottom:-20%; right:0%;
+  border-radius:50%;
+  background: radial-gradient(ellipse, rgba(160,50,255,.4) 0%, transparent 70%);
+  mix-blend-mode:screen;
+  animation: aurB 13s ease-in-out infinite alternate-reverse;
+}
+@keyframes aurA{
+  0%  { transform:translate(0,0) scale(1); opacity:.7; }
+  50% { transform:translate(6%,-10%) scale(1.2); opacity:1; }
+  100%{ transform:translate(-4%,6%) scale(.9); opacity:.6; }
+}
+@keyframes aurB{
+  0%  { transform:translate(0,0) scale(1); opacity:.5; }
+  100%{ transform:translate(-8%,-12%) scale(1.25); opacity:.9; }
+}
+.sky-beam{
+  position:fixed;
+  width:200px; height:100vh;
+  top:0; pointer-events:none;
+  z-index:0; mix-blend-mode:screen;
+  background: linear-gradient(180deg, rgba(255,130,210,.18) 0%, transparent 80%);
+}
+@keyframes beamSway{
+  0%  { transform:skewX(-18deg) translateX(-30px); opacity:.7; }
+  100%{ transform:skewX(-8deg)  translateX(30px);  opacity:1; }
+}
+
+/* ═══════════════════════════════════════════
+   BEAR PHOTO
+═══════════════════════════════════════════ */
+.bear-stage img{
+  width:100%; height:100%;
+  object-fit:contain;
+  border-radius:0;
+  pointer-events:auto;
+  cursor:grab;
+  filter: drop-shadow(0 30px 50px rgba(80,10,150,.6));
+  mix-blend-mode: screen;
+  animation: float 6s ease-in-out infinite;
+}
+.bear-stage:active img{cursor:grabbing}
+
+/* ═══════════════════════════════════════════
+   CLOUD TRANSITION OVERLAY
+═══════════════════════════════════════════ */
+#cloudTransition{
+  position:fixed; inset:0; z-index:998;
+  display:none; pointer-events:none;
+  background: radial-gradient(ellipse at 50% 40%, #ffe0ea 0%, #ffb8d6 35%, #c96ab0 60%, #5a1a7d 100%);
+  opacity:0;
+  transition: opacity .22s ease;
+}
+#cloudTransition.ct-show{ opacity:1; }
+.ct-cloud{
+  position:absolute;
+  opacity:0;
+  animation: ctBloom .55s cubic-bezier(.2,.9,.4,1) forwards;
+}
+@keyframes ctBloom{
+  from{ transform:translate(-50%,-50%) scale(.05); opacity:0; }
+  to  { transform:translate(-50%,-50%) scale(1.6);  opacity:.95; }
+}
+
+/* ═══════════════════════════════════════════
+   DARK SKY TICKET THEME
+═══════════════════════════════════════════ */
+.reader{
+  background: linear-gradient(155deg,#120622 0%,#2b0d4e 35%,#180838 70%,#0f0424 100%) !important;
+}
+.reader-topbar{
+  background: rgba(8,3,22,.92) !important;
+  border-bottom: 4px solid var(--pink) !important;
+  backdrop-filter: blur(12px);
+}
+.cloud-strip{
+  background: linear-gradient(180deg,rgba(20,6,44,.95) 0%,rgba(45,15,75,.95) 100%) !important;
+  border-bottom: 2px solid rgba(255,94,160,.35) !important;
+}
+.cs-btn{
+  background: rgba(255,255,255,.07) !important;
+  color:#e0b8f0 !important;
+  border: 2px solid rgba(200,100,180,.3) !important;
+}
+.cs-btn:hover{ background:rgba(255,94,160,.22) !important; }
+.cs-btn.active{ background:var(--pink) !important; color:#fff !important; border-color:var(--pink) !important; }
+.ticket-wrap{ color:#f0d8ee !important; }
+.ticket-head{ border-bottom: 3px solid rgba(255,94,160,.3) !important; }
+.ticket-num{
+  background: rgba(255,94,160,.18) !important;
+  color: var(--gold) !important;
+  border: 1px solid rgba(255,94,160,.4) !important;
+}
+.ticket-title{ color:#fff !important; text-shadow: 0 0 35px rgba(255,94,160,.5); }
+.ticket-question-block{
+  background: rgba(255,255,255,.045) !important;
+  border: 2px solid rgba(200,100,180,.25) !important;
+  border-left: 10px solid var(--pink) !important;
+  box-shadow: 6px 6px 0 rgba(255,94,160,.12), 0 0 30px rgba(255,94,160,.08) !important;
+  backdrop-filter: blur(8px);
+}
+.ticket-question-label{ color:var(--gold) !important; }
+.ticket-question-text{ color:#e8c4ee !important; }
+.sec-h{
+  color:var(--gold) !important;
+  background: linear-gradient(90deg,rgba(255,94,160,.14) 0%,transparent 65%) !important;
+  border-left: 6px solid var(--pink) !important;
+}
+.sec-b{ color:#d4b8e4 !important; }
+.sec-b strong,.hw{ color:#fff !important; }
+.ha{ background:rgba(200,80,220,.15) !important; color:#ff9fe0 !important; }
+pre.code{
+  background: rgba(8,3,22,.92) !important;
+  border: 2px solid rgba(200,100,180,.25) !important;
+  border-top: 6px solid var(--pink) !important;
+  box-shadow: 6px 6px 0 rgba(255,94,160,.1) !important;
+}
+table.cxt{
+  border: 2px solid rgba(200,100,180,.25) !important;
+  background: rgba(255,255,255,.03) !important;
+  box-shadow: 6px 6px 0 rgba(255,94,160,.1) !important;
+}
+table.cxt th{ background:rgba(255,94,160,.18) !important; color:var(--gold) !important; border-bottom-color:var(--pink) !important; }
+table.cxt td{ color:#d4b8e4 !important; border-color:rgba(200,100,180,.12) !important; }
+table.cxt tr:nth-child(even){ background:rgba(255,94,160,.05) !important; }
+.gloss{
+  background: linear-gradient(135deg,rgba(70,15,130,.35) 0%,rgba(160,50,110,.25) 100%) !important;
+  border: 2px solid rgba(200,100,180,.25) !important;
+  box-shadow: 6px 6px 0 rgba(255,94,160,.1) !important;
+  backdrop-filter: blur(8px);
+}
+.gloss-t{ color:var(--gold) !important; border-bottom: 2px dashed rgba(200,100,180,.3) !important; }
+.gloss-k{ color:#ff9fe0 !important; }
+.gloss-v{ color:#d4b8e4 !important; }
+.gloss-row{ border-bottom: 1px dotted rgba(200,100,180,.18) !important; }
+.quiz{
+  background: rgba(255,255,255,.04) !important;
+  border: 2px solid rgba(200,100,180,.25) !important;
+  box-shadow: 8px 8px 0 rgba(255,94,160,.1) !important;
+  backdrop-filter: blur(8px);
+}
+.quiz-title{ color:var(--gold) !important; border-bottom: 4px solid var(--pink) !important; }
+.qqtext{ color:#f0d8ee !important; }
+.qopt{
+  background: rgba(255,255,255,.05) !important;
+  border: 2px solid rgba(200,100,180,.22) !important;
+  color:#d4b8e4 !important;
+}
+.qopt:hover:not(:disabled){ background:rgba(255,94,160,.18) !important; transform:translateX(4px); }
+.qletter{ background:rgba(255,94,160,.3) !important; color:var(--gold) !important; }
+.qopt.correct{ background:rgba(80,200,120,.18) !important; border-color:rgba(80,200,120,.45) !important; }
+.qopt.wrong  { background:rgba(200,60,80,.18) !important;  border-color:rgba(200,60,80,.45) !important; }
+.qopt.correct .qletter{ background:rgba(80,200,120,.4) !important; color:#fff !important; }
+.qopt.wrong   .qletter{ background:rgba(200,60,80,.4) !important;  color:#fff !important; }
+.qfb.correct{ background:rgba(80,200,120,.18) !important; color:#7fe8a0 !important; border-left-color:#7fe8a0 !important; }
+.qfb.wrong  { background:rgba(200,60,80,.15) !important;  color:#ff9aaa !important; border-left-color:#ff9aaa !important; }
+.arrows{ border-top: 3px solid rgba(200,100,180,.25) !important; }
+.arrow-btn{
+  background: rgba(255,94,160,.15) !important;
+  border: 1px solid rgba(255,94,160,.35) !important;
+  color:var(--gold) !important;
+}
+.arrow-btn:hover:not(:disabled){ background:var(--pink) !important; color:#fff !important; }
+
+/* ═══════════════════════════════════════════
+   POLISH LAYER — toggle, brief mode, callouts,
+   code header + syntax highlighting
+═══════════════════════════════════════════ */
+
+/* wider, calmer reading column */
+.ticket-wrap{ max-width: 880px; }
+.sec-b{ font-size: 1.02rem !important; line-height: 1.78 !important; }
+.sec{ margin-bottom: 30px; }
+
+/* ── Brief / Full segmented control ── */
+.modebar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; flex-wrap:wrap;
+  margin: 4px 0 30px;
+}
+.modebar-label{
+  font-family:'Space Mono', monospace;
+  font-size:.6rem; letter-spacing:3px; text-transform:uppercase;
+  color: rgba(240,216,238,.5);
+}
+.seg{
+  display:inline-flex; gap:4px;
+  padding:5px; border-radius:100px;
+  background: rgba(255,255,255,.05);
+  border:1px solid rgba(200,100,180,.28);
+  backdrop-filter: blur(6px);
+}
+.seg-btn{
+  border:none; cursor:pointer;
+  padding:9px 20px; border-radius:100px;
+  font-family:'Bungee', sans-serif;
+  font-size:.66rem; letter-spacing:.5px;
+  background:transparent; color:#e0b8f0;
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+}
+.seg-btn:hover{ color:#fff; }
+.seg-btn.active{
+  background: linear-gradient(135deg,var(--pink),#c0488a);
+  color:#fff;
+  box-shadow: 0 4px 16px rgba(255,94,160,.4);
+}
+
+/* ── BRIEF view ── */
+.brief{
+  font-family:'DM Sans', sans-serif;
+  font-size: 1.08rem; line-height: 1.8;
+  color:#e2cdee;
+  animation: briefIn .4s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes briefIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+.brief b, .brief strong{ color:#fff; }
+.brief .ha{ background:rgba(200,80,220,.18); color:#ff9fe0; }
+
+/* callouts — used in brief and full bodies */
+.kbox, .abox, .note{
+  display:block; border-radius:12px;
+  margin:16px 0; padding:15px 18px;
+  font-size:.98rem; line-height:1.65;
+  backdrop-filter: blur(6px);
+}
+.kbox{
+  background: linear-gradient(135deg, rgba(255,94,160,.14), rgba(160,50,160,.10));
+  border:1px solid rgba(255,94,160,.32);
+  border-left:5px solid var(--pink);
+  color:#f3dcef;
+}
+.kbox b{ color:#fff; }
+.abox{
+  background: rgba(255,210,77,.10);
+  border:1px solid rgba(255,210,77,.32);
+  border-left:5px solid var(--gold);
+  color:#ffe9b0;
+  font-family:'DM Sans',sans-serif;
+}
+.abox .ha{ background:rgba(255,210,77,.14); color:#ffd97a; }
+.note{
+  background: rgba(255,255,255,.045);
+  border:1px dashed rgba(200,100,180,.4);
+  color:#d4b8e4; font-size:.92rem;
+}
+.sec-b .kbox, .sec-b .abox, .sec-b .note{ margin:14px 0; }
+
+.brief-more{
+  margin-top:22px; padding:16px 20px;
+  border-radius:12px; cursor:pointer;
+  background: rgba(255,255,255,.04);
+  border:1px solid rgba(200,100,180,.25);
+  color:#cdb0e0; font-family:'DM Sans',sans-serif; font-size:.95rem;
+  transition: all .2s; text-align:center;
+}
+.brief-more b{ color:var(--gold); }
+.brief-more:hover{ background:rgba(255,94,160,.12); border-color:var(--pink); transform:translateY(-2px); }
+
+/* ── CODE BLOCK: header bar + syntax tones ── */
+pre.code{
+  padding:0 !important;
+  font-size:.82rem !important;
+  line-height:1.75 !important;
+  border-radius:12px !important;
+  border:1px solid rgba(200,100,180,.3) !important;
+  border-top:none !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 0 1px rgba(255,94,160,.06) !important;
+  overflow:hidden !important;
+  background:#0c0520 !important;
+}
+pre.code .code-bar{
+  display:flex; align-items:center; gap:7px;
+  padding:10px 16px;
+  background: linear-gradient(180deg,#1b0b34,#140726);
+  border-bottom:1px solid rgba(200,100,180,.22);
+}
+pre.code .code-bar i{
+  width:11px; height:11px; border-radius:50%;
+  background:#3a2150; display:inline-block;
+}
+pre.code .code-bar i:nth-child(1){ background:#ff5f57; }
+pre.code .code-bar i:nth-child(2){ background:#febc2e; }
+pre.code .code-bar i:nth-child(3){ background:#28c840; }
+pre.code .code-bar b{
+  margin-left:8px;
+  font-family:'Space Mono',monospace; font-weight:400;
+  font-size:.6rem; letter-spacing:2px; text-transform:uppercase;
+  color: rgba(224,184,240,.55);
+}
+pre.code code{
+  display:block;
+  padding:16px 20px;
+  font-family:'Space Mono', monospace;
+  color:#e8d6c4;
+  white-space:pre;
+  overflow-x:auto;
+}
+.t-kw  { color:#ff7ab0; font-weight:700; }
+.t-str { color:#9be8a0; }
+.t-num { color:#ffce6b; }
+.t-com { color:#7a6a9a; font-style:italic; }
+
+@media (max-width:700px){
+  .modebar{ flex-direction:column; align-items:flex-start; gap:10px; }
+  .seg{ width:100%; }
+  .seg-btn{ flex:1; text-align:center; }
+  pre.code{ font-size:.74rem !important; }
+}
+
+/* ═══════════════════════════════════════════
+   INTERACTIVE SIMULATIONS (step-through visualizers)
+═══════════════════════════════════════════ */
+.sim{
+  background: rgba(255,255,255,.045);
+  border:1px solid rgba(200,100,180,.25);
+  border-radius:16px;
+  padding:22px 24px;
+  margin:28px 0;
+  box-shadow:0 12px 32px rgba(0,0,0,.28);
+  backdrop-filter: blur(6px);
+}
+.sim-h{ font-family:'Bungee',sans-serif; font-size:.92rem; letter-spacing:.5px; color:var(--gold); margin-bottom:7px; }
+.sim-desc{ font-family:'DM Sans',sans-serif; font-size:.9rem; line-height:1.55; color:#cdb0e0; margin-bottom:16px; }
+.sim-ctrl{ display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.sim-btn{
+  font-family:'Bungee',sans-serif; font-size:.64rem; letter-spacing:.5px;
+  padding:9px 17px; border-radius:100px; cursor:pointer;
+  border:1px solid rgba(200,100,180,.3); background:rgba(255,255,255,.05); color:#e0b8f0;
+  transition: transform .14s var(--ease-out), background .2s var(--ease-out), color .2s var(--ease-out);
+}
+.sim-btn:hover{ background:rgba(255,94,160,.18); color:#fff; }
+.sim-btn:active{ transform:scale(.96); }
+.sim-btn.primary{ background:linear-gradient(135deg,var(--pink),#c0488a); color:#fff; border-color:transparent; }
+.sim-stage{
+  background: rgba(8,3,22,.5);
+  border:1px solid rgba(200,100,180,.18);
+  border-radius:12px;
+  padding:22px 18px; min-height:96px;
+  display:flex; align-items:center; justify-content:center; overflow-x:auto;
+}
+.sim-arr{ display:flex; flex-wrap:wrap; justify-content:center; }
+.sim-grid{ display:inline-grid; gap:8px; }
+.sim-tree{ display:flex; flex-direction:column; gap:14px; }
+.sim-row{ display:flex; gap:8px; justify-content:center; }
+.sim-cell{
+  position:relative;
+  display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
+  min-width:46px; min-height:46px; padding:6px 9px; margin:4px;
+  border-radius:11px; border:1.5px solid rgba(200,100,180,.28);
+  background:rgba(255,255,255,.04);
+  font-family:'Space Mono',monospace;
+  transition: background .25s var(--ease-out), border-color .25s var(--ease-out),
+              box-shadow .25s var(--ease-out), transform .25s var(--ease-out);
+}
+.sim-cell .lab{ font-size:.58rem; color:#9a86b8; line-height:1; margin-bottom:2px; }
+.sim-cell .val{ font-size:1.1rem; font-weight:700; color:#f0d8ee; line-height:1.1; }
+.sim-cell.empty{ border-style:dashed; opacity:.55; }
+.sim-cell.empty .val{ color:#5a4a72; }
+.sim-cell.hdr{ border:none; background:transparent; min-width:34px; min-height:34px; box-shadow:none; transform:none; }
+.sim-cell.hdr .val{ color:var(--gold); font-size:.95rem; }
+.sim-cell.done{ border-color:rgba(58,157,93,.6); background:rgba(58,157,93,.14); }
+.sim-cell.done .val{ color:#a8e6c0; }
+.sim-cell.src{ border-color:#3a78c2; background:rgba(58,120,194,.18); }
+.sim-cell.src .val{ color:#bcd8ff; }
+.sim-cell.cur{ border-color:#f0b73e; background:rgba(240,183,62,.18); box-shadow:0 0 16px rgba(240,183,62,.32); transform:translateY(-2px); }
+.sim-cell.cur .val, .sim-cell.cur .lab{ color:#ffe1a0; }
+.sim-legend{ display:flex; gap:18px; flex-wrap:wrap; margin-top:15px; font-family:'DM Sans',sans-serif; font-size:.82rem; color:#cdb0e0; }
+.sim-leg{ display:inline-flex; align-items:center; gap:7px; }
+.sim-leg .dot{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+.sim-leg .dot.cur{ background:#f0b73e; }
+.sim-leg .dot.src{ background:#3a78c2; }
+.sim-leg .dot.done{ background:#3a9d5d; }
+.sim-status{ font-family:'Space Mono',monospace; font-size:.9rem; line-height:1.5; color:#d4b8e4; margin-top:14px; }
+.sim-status b{ color:var(--gold); }
+@media (max-width:700px){
+  .sim-cell{ min-width:38px; min-height:40px; padding:4px 6px; margin:3px; }
+  .sim-cell .val{ font-size:.95rem; }
+}
+
+/* ═══════════════════════════════════════════
+   CRAFT POLISH — easing tokens, hero star field,
+   focus rings, press feedback, entrance stagger,
+   reduced-motion (Emil / critique / ui-ux-pro-max)
+═══════════════════════════════════════════ */
+:root{
+  --ease-out: cubic-bezier(.23,1,.32,1);
+  --ease-in-out: cubic-bezier(.77,0,.175,1);
+}
+html{ -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; scroll-padding-top:80px; }
+
+/* — hero night-sky field — */
+.hero-fx{ position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+.hstar{
+  position:absolute; border-radius:50%;
+  background:#fff;
+  opacity:var(--op,.6);
+  animation: hstarTw 3s ease-in-out infinite;
+}
+/* opacity-only twinkle — no box-shadow / scale → cheap to paint for hundreds of dots */
+@keyframes hstarTw{
+  0%,100%{ opacity:calc(var(--op,.6) * .35); }
+  50%    { opacity:var(--op,.6); }
+}
+.hsparkle{
+  position:absolute;
+  color:#fff;
+  text-shadow:0 0 10px rgba(255,210,240,.8);
+  opacity:.85;
+  animation: hsparkleTw 2.6s ease-in-out infinite;
+}
+@keyframes hsparkleTw{
+  0%,100%{ opacity:.25; transform:scale(.75) rotate(-6deg); }
+  50%    { opacity:1;   transform:scale(1.1) rotate(6deg); }
+}
+
+/* — stars sprinkled between the clouds — */
+.clouds-stars{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.clouds-stars .cstar{
+  position:absolute; border-radius:50%;
+  background:#fff;
+  opacity:var(--op,.6);
+  animation: hstarTw 3s ease-in-out infinite;
+}
+.clouds-stars .csparkle{
+  position:absolute; color:#fff;
+  text-shadow:0 0 10px rgba(255,210,240,.8);
+  animation: hsparkleTw 2.8s ease-in-out infinite;
+}
+
+/* — keyboard focus visibility (a11y) — */
+a:focus-visible, button:focus-visible, .cloud:focus-visible, [tabindex]:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+  border-radius:8px;
+}
+
+/* — press feedback: UI must feel it heard the press — */
+.cs-btn, .seg-btn, .arrow-btn, .r-close, .qopt, .brief-more, .cloud{
+  transition: transform .14s var(--ease-out), background .2s var(--ease-out),
+              filter .2s var(--ease-out), color .2s var(--ease-out),
+              border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
+}
+.cs-btn:active, .seg-btn:active, .arrow-btn:active:not(:disabled),
+.r-close:active, .brief-more:active, .qopt:active:not(:disabled){
+  transform: scale(.97);
+}
+.cloud:active{ transform: scale(1.04); }   /* gentle, stays above resting scale */
+
+/* — entrance stagger, only when opening / switching a ticket — */
+.ticket-wrap.anim > *{
+  animation: secIn .42s var(--ease-out) both;
+}
+.ticket-wrap.anim > *:nth-child(1){ animation-delay:.00s; }
+.ticket-wrap.anim > *:nth-child(2){ animation-delay:.05s; }
+.ticket-wrap.anim > *:nth-child(3){ animation-delay:.10s; }
+.ticket-wrap.anim > *:nth-child(4){ animation-delay:.15s; }
+.ticket-wrap.anim > *:nth-child(5){ animation-delay:.20s; }
+.ticket-wrap.anim > *:nth-child(6){ animation-delay:.25s; }
+.ticket-wrap.anim > *:nth-child(n+7){ animation-delay:.30s; }
+@keyframes secIn{
+  from{ opacity:0; transform:translateY(10px); filter:blur(2px); }
+  to  { opacity:1; transform:none; filter:none; }
+}
+
+/* — shooting star on a correct quiz answer (top-right → bottom-left) — */
+.shoot{
+  position:fixed; top:0; left:0; z-index:9999; pointer-events:none;
+  width:180px; height:3px; border-radius:3px;
+  background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,234,176,.6), #fff);
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.9));
+  animation: shoot 1.05s cubic-bezier(.45,0,.2,1) forwards;
+}
+.shoot::after{
+  content:''; position:absolute; right:-2px; top:50%;
+  width:10px; height:10px; margin-top:-5px; border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 12px 4px #fff, 0 0 28px 9px rgba(255,210,77,.9);
+}
+@keyframes shoot{
+  0%   { transform: translate(94vw, -12vh) rotate(135deg); opacity:0; }
+  12%  { opacity:1; }
+  85%  { opacity:1; }
+  100% { transform: translate(-16vw, 94vh) rotate(135deg); opacity:0; }
+}
+
+/* — pause expensive background animations while the user scrolls (kills jank) — */
+body.scrolling .sky-haze,
+body.scrolling .sky-aurora::before,
+body.scrolling .sky-aurora::after,
+body.scrolling .sky-beam,
+body.scrolling .hstar,
+body.scrolling .cstar,
+body.scrolling .hsparkle,
+body.scrolling .csparkle,
+body.scrolling .cloud.drift,
+body.scrolling .bear-stage img{
+  animation-play-state: paused !important;
+}
+
+/* — respect users who prefer less motion — */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .sky-backdrop, .sky-haze, .sky-aurora, .cloud-svg .cloud-body,
+  .bear-stage img, .bear-stage svg, .hstar, .hsparkle, .sparkle, .bird, .star{
+    animation:none !important;
+  }
+  .cloud.drift{ animation:none !important; transform: scale(var(--scale,1)) !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="sky-backdrop"></div>
+<div class="sky-haze"></div>
+<div class="sky-aurora"></div>
+<div class="sky-beam" style="left:15%;transform:skewX(-18deg);animation:beamSway 14s ease-in-out infinite alternate;"></div>
+<div class="sky-beam" style="left:52%;width:140px;background:linear-gradient(180deg,rgba(180,80,255,.14) 0%,transparent 80%);transform:skewX(12deg);animation:beamSway 19s ease-in-out infinite alternate-reverse;"></div>
+<div class="sky-beam" style="left:75%;width:100px;background:linear-gradient(180deg,rgba(255,180,80,.12) 0%,transparent 70%);transform:skewX(-8deg);animation:beamSway 11s ease-in-out infinite alternate;"></div>
+<!-- cloud transition overlay -->
+<div id="cloudTransition"></div>
+
+<!-- fixed header -->
+<div class="top-bar">
+  <div class="brand">ALGO / 18</div>
+  <div class="meta">
+    <a class="lang-link" href="index.html">RU</a>
+    <span class="dot">·</span>
+    <span>Click a cloud</span>
+    <span class="dot">·</span>
+    <span id="progressMeta">0 / 18</span>
+  </div>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="hero">
+
+  <!-- twinkling star field + sparkles (generated) -->
+  <div class="hero-fx" id="heroFx"></div>
+
+  <!-- hero title -->
+  <div class="hero-title">
+    <h1>ALGO</h1>
+    <div class="tag">Algorithms & data structures exam · 18 tickets</div>
+  </div>
+
+  <!-- the interactive flying bear (photo) -->
+  <div class="bear-stage" id="bearStage">
+    <img id="bearSvg" src="e55fzb6s1lh51.jpg" alt="ALGO Bear">
+    <!-- hidden SVG kept for pupils JS compat -->
+    <svg id="bearSvgHidden" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <defs>
+        <radialGradient id="furGrad" cx=".5" cy=".4" r=".75">
+          <stop offset="0" stop-color="#a87346"/>
+          <stop offset=".55" stop-color="#7a4a25"/>
+          <stop offset="1" stop-color="#3e2312"/>
+        </radialGradient>
+        <radialGradient id="muzzleGrad" cx=".5" cy=".4" r=".7">
+          <stop offset="0" stop-color="#e6b48a"/>
+          <stop offset="1" stop-color="#b8804e"/>
+        </radialGradient>
+        <linearGradient id="jacketGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#eef1f4"/>
+          <stop offset="1" stop-color="#b8bec7"/>
+        </linearGradient>
+        <linearGradient id="jeansGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#3d6fa8"/>
+          <stop offset="1" stop-color="#1f447a"/>
+        </linearGradient>
+        <radialGradient id="eyeWhite" cx=".4" cy=".4" r=".65">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset="1" stop-color="#e8dcd0"/>
+        </radialGradient>
+        <filter id="fluffy" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise"/>
+          <feComposite in="SourceGraphic" in2="noise" operator="arithmetic" k1="0" k2="1" k3="0.15" k4="0"/>
+        </filter>
+      </defs>
+
+      <g id="bearAll">
+
+        <!-- ===== LEGS / SNEAKERS ===== -->
+        <g transform="translate(0 0)">
+          <!-- left leg -->
+          <rect x="148" y="330" width="40" height="70" rx="18" fill="url(#jeansGrad)"/>
+          <rect x="148" y="388" width="40" height="12" fill="#0f2a52"/>
+          <!-- left sneaker -->
+          <g transform="translate(142 398)">
+            <ellipse cx="28" cy="22" rx="36" ry="20" fill="#e8ecf1"/>
+            <path d="M -6 28 Q 28 10 62 28 L 62 36 Q 28 44 -6 36 Z" fill="#ffffff"/>
+            <rect x="-6" y="30" width="68" height="8" fill="#d0d5dc"/>
+            <path d="M 20 14 Q 30 6 46 14" stroke="#2c4da0" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="26" cy="20" r="2" fill="#2c4da0"/>
+            <circle cx="40" cy="20" r="2" fill="#2c4da0"/>
+          </g>
+
+          <!-- right leg -->
+          <rect x="212" y="330" width="40" height="70" rx="18" fill="url(#jeansGrad)"/>
+          <rect x="212" y="388" width="40" height="12" fill="#0f2a52"/>
+          <!-- right sneaker -->
+          <g transform="translate(206 398)">
+            <ellipse cx="28" cy="22" rx="36" ry="20" fill="#e8ecf1"/>
+            <path d="M -6 28 Q 28 10 62 28 L 62 36 Q 28 44 -6 36 Z" fill="#ffffff"/>
+            <rect x="-6" y="30" width="68" height="8" fill="#d0d5dc"/>
+            <path d="M 20 14 Q 30 6 46 14" stroke="#2c4da0" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="26" cy="20" r="2" fill="#2c4da0"/>
+            <circle cx="40" cy="20" r="2" fill="#2c4da0"/>
+          </g>
+        </g>
+
+        <!-- ===== BODY / VARSITY JACKET ===== -->
+        <g id="bodyGroup">
+          <!-- jacket torso -->
+          <path d="M 120 240 Q 110 220 140 210 L 260 210 Q 290 220 280 240 L 285 340 Q 280 355 260 355 L 140 355 Q 120 355 115 340 Z"
+                fill="url(#jacketGrad)" stroke="#1a0830" stroke-width="3" stroke-linejoin="round"/>
+          <!-- jacket opening -->
+          <path d="M 200 210 L 200 355" stroke="#1a0830" stroke-width="2" opacity=".3"/>
+          <!-- buttons -->
+          <circle cx="200" cy="250" r="4" fill="#1a0830"/>
+          <circle cx="200" cy="280" r="4" fill="#1a0830"/>
+          <circle cx="200" cy="310" r="4" fill="#1a0830"/>
+          <!-- ribbed cuffs at bottom -->
+          <rect x="115" y="346" width="170" height="12" fill="#4a7bd4" stroke="#1a0830" stroke-width="2"/>
+          <g stroke="#2a5da8" stroke-width="1.5">
+            <line x1="130" y1="346" x2="130" y2="358"/>
+            <line x1="150" y1="346" x2="150" y2="358"/>
+            <line x1="170" y1="346" x2="170" y2="358"/>
+            <line x1="190" y1="346" x2="190" y2="358"/>
+            <line x1="210" y1="346" x2="210" y2="358"/>
+            <line x1="230" y1="346" x2="230" y2="358"/>
+            <line x1="250" y1="346" x2="250" y2="358"/>
+            <line x1="270" y1="346" x2="270" y2="358"/>
+          </g>
+          <!-- chenille letter U (varsity patch) -->
+          <g transform="translate(150 268)">
+            <rect x="-5" y="-5" width="54" height="54" rx="6" fill="#fff" stroke="#1a0830" stroke-width="2"/>
+            <text x="22" y="38" text-anchor="middle" font-family="Bagel Fat One, sans-serif" font-size="42" fill="#4a7bd4" stroke="#1a0830" stroke-width="1.5">U</text>
+          </g>
+        </g>
+
+        <!-- ===== LEFT ARM (away from body, out) ===== -->
+        <g id="armL" style="transform-origin: 120px 240px;">
+          <path d="M 120 230 Q 80 245 60 280 Q 50 305 70 320" stroke="url(#jacketGrad)" stroke-width="40" fill="none" stroke-linecap="round"/>
+          <path d="M 120 230 Q 80 245 60 280 Q 50 305 70 320" stroke="#1a0830" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85" stroke-dasharray="0"/>
+          <!-- cuff -->
+          <ellipse cx="68" cy="316" rx="22" ry="8" fill="#4a7bd4" stroke="#1a0830" stroke-width="2"/>
+          <!-- paw -->
+          <circle cx="65" cy="328" r="26" fill="url(#furGrad)" stroke="#1a0830" stroke-width="3"/>
+          <!-- paw pads -->
+          <ellipse cx="60" cy="322" rx="8" ry="6" fill="#e6b48a"/>
+          <circle cx="55" cy="315" r="3.5" fill="#e6b48a"/>
+          <circle cx="65" cy="312" r="3.5" fill="#e6b48a"/>
+          <circle cx="74" cy="314" r="3.5" fill="#e6b48a"/>
+        </g>
+
+        <!-- ===== RIGHT ARM (waving) ===== -->
+        <g id="armR" style="transform-origin: 280px 240px;">
+          <path d="M 280 230 Q 320 230 340 200 Q 348 175 336 150" stroke="url(#jacketGrad)" stroke-width="40" fill="none" stroke-linecap="round"/>
+          <!-- cuff -->
+          <ellipse cx="338" cy="155" rx="22" ry="8" fill="#4a7bd4" stroke="#1a0830" stroke-width="2" transform="rotate(-25 338 155)"/>
+          <!-- paw -->
+          <circle cx="336" cy="138" r="26" fill="url(#furGrad)" stroke="#1a0830" stroke-width="3"/>
+          <!-- paw pads -->
+          <ellipse cx="338" cy="134" rx="8" ry="6" fill="#e6b48a"/>
+          <circle cx="328" cy="126" r="3.5" fill="#e6b48a"/>
+          <circle cx="338" cy="124" r="3.5" fill="#e6b48a"/>
+          <circle cx="348" cy="128" r="3.5" fill="#e6b48a"/>
+        </g>
+
+        <!-- ===== HEAD ===== -->
+        <g id="bearHead" style="transform-origin: 200px 140px;">
+          <!-- ears -->
+          <circle cx="130" cy="68" r="32" fill="url(#furGrad)" stroke="#1a0830" stroke-width="3"/>
+          <circle cx="270" cy="68" r="32" fill="url(#furGrad)" stroke="#1a0830" stroke-width="3"/>
+          <ellipse cx="130" cy="70" rx="16" ry="18" fill="#d9a676"/>
+          <ellipse cx="270" cy="70" rx="16" ry="18" fill="#d9a676"/>
+
+          <!-- head shape (big cartoon) -->
+          <ellipse cx="200" cy="140" rx="100" ry="95" fill="url(#furGrad)" stroke="#1a0830" stroke-width="3"/>
+
+          <!-- muzzle (lighter patch around nose/mouth) -->
+          <ellipse cx="200" cy="175" rx="60" ry="46" fill="url(#muzzleGrad)"/>
+
+          <!-- eyes (big cartoon buttons) -->
+          <g>
+            <!-- left eye -->
+            <circle cx="160" cy="128" r="24" fill="url(#eyeWhite)" stroke="#1a0830" stroke-width="3"/>
+            <!-- right eye -->
+            <circle cx="240" cy="128" r="24" fill="url(#eyeWhite)" stroke="#1a0830" stroke-width="3"/>
+            <!-- pupils (move with cursor) -->
+            <g id="pupils">
+              <circle id="pL" cx="160" cy="128" r="11" fill="#1a0830"/>
+              <circle id="pR" cx="240" cy="128" r="11" fill="#1a0830"/>
+              <circle cx="163" cy="124" r="3.5" fill="#fff"/>
+              <circle cx="243" cy="124" r="3.5" fill="#fff"/>
+            </g>
+            <!-- colourful iris rings (like referenced mascot style) -->
+            <circle cx="160" cy="128" r="17" fill="none" stroke="#ffb3d1" stroke-width="2" opacity=".7"/>
+            <circle cx="240" cy="128" r="17" fill="none" stroke="#ffd24d" stroke-width="2" opacity=".7"/>
+          </g>
+
+          <!-- nose -->
+          <ellipse cx="200" cy="162" rx="14" ry="10" fill="#1a0830"/>
+          <ellipse cx="196" cy="158" rx="4" ry="2.5" fill="#fff" opacity=".7"/>
+
+          <!-- mouth (small happy) -->
+          <path d="M 200 175 L 200 188" stroke="#1a0830" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 200 188 Q 186 200 178 194" fill="none" stroke="#1a0830" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 200 188 Q 214 200 222 194" fill="none" stroke="#1a0830" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- blush -->
+          <circle cx="135" cy="170" r="10" fill="#ff7aa6" opacity=".55"/>
+          <circle cx="265" cy="170" r="10" fill="#ff7aa6" opacity=".55"/>
+
+          <!-- tassel (decorative, sways) -->
+          <g id="tassel" style="transform-origin: 105px 60px;">
+            <path d="M 105 60 Q 95 90 90 115" stroke="#ffd24d" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <rect x="84" y="112" width="14" height="22" rx="3" fill="#ffd24d"/>
+            <line x1="88" y1="132" x2="86" y2="146" stroke="#ffd24d" stroke-width="2"/>
+            <line x1="91" y1="132" x2="91" y2="148" stroke="#ffd24d" stroke-width="2"/>
+            <line x1="94" y1="132" x2="96" y2="146" stroke="#ffd24d" stroke-width="2"/>
+          </g>
+        </g>
+
+        <!-- gold chain necklace -->
+        <g>
+          <path d="M 145 210 Q 200 240 255 210" stroke="#ffd24d" stroke-width="4" fill="none" stroke-dasharray="3 2"/>
+          <circle cx="200" cy="233" r="8" fill="#ffd24d" stroke="#1a0830" stroke-width="1.5"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- scroll caption -->
+  <div class="hero-caption">
+    Scroll down — the clouds await<span class="arrow">↓</span>
+  </div>
+
+</section>
+
+<!-- ═══════════════ CLOUDS ═══════════════ -->
+<section class="clouds-section" id="cloudsSection">
+  <div class="section-label">
+    <div class="kicker">Choose your ticket</div>
+    <h2>18 CLOUDS · 18 ANSWERS</h2>
+  </div>
+
+  <div class="clouds-stars" id="cloudsStars"></div>
+  <div id="cloudsContainer"></div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<section class="footer">
+  <div class="stars" id="starsLayer"></div>
+  <h3>FLY HIGH. PASS THE EXAM.</h3>
+  <p>Eighteen tickets. Brief and full breakdowns, pseudocode, glossaries, mini-quizzes. Everything you need to lift your grade to the skies.</p>
+  <div class="meta-line">made by maxik2k07</div>
+</section>
+
+<!-- ═══════════════ TICKET READER OVERLAY ═══════════════ -->
+<div class="reader" id="reader">
+  <div class="reader-topbar">
+    <div class="r-brand">
+      <span>ALGO</span>
+      <span class="chip" id="rChip">BILET 01</span>
+    </div>
+    <button class="r-close" onclick="closeReader()">← Back to clouds</button>
+  </div>
+  <div class="cloud-strip" id="cloudStrip"></div>
+  <div class="ticket-wrap" id="ticketWrap"></div>
+</div>
+
+<!-- reusable cloud SVG template — soft painterly blobs with gradient fills -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- soft-edge filter (painterly smudge) -->
+    <filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -6"/>
+    </filter>
+    <filter id="softEdge2" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -5"/>
+    </filter>
+
+    <!-- iridescent pink-peach gradient -->
+    <linearGradient id="cloudGradA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#ffd9e0"/>
+      <stop offset="50%"  stop-color="#ff9ab8"/>
+      <stop offset="100%" stop-color="#d46a9e"/>
+    </linearGradient>
+    <linearGradient id="cloudGradB" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#ffc9a3"/>
+      <stop offset="50%"  stop-color="#ff8a7a"/>
+      <stop offset="100%" stop-color="#b44a82"/>
+    </linearGradient>
+    <linearGradient id="cloudGradC" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#ffb8d6"/>
+      <stop offset="50%"  stop-color="#d16aa8"/>
+      <stop offset="100%" stop-color="#6e2882"/>
+    </linearGradient>
+    <linearGradient id="cloudGradD" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#ffe0b8"/>
+      <stop offset="50%"  stop-color="#ff9a7a"/>
+      <stop offset="100%" stop-color="#d64a8a"/>
+    </linearGradient>
+
+    <!-- soft fluffy cloud shape (made of overlapping blurred ellipses) -->
+    <symbol id="cloudShapeA" viewBox="0 0 300 180">
+      <g filter="url(#softEdge)">
+        <ellipse cx="80"  cy="110" rx="55" ry="40" fill="url(#cloudGradA)" class="cloud-body"/>
+        <ellipse cx="140" cy="85"  rx="62" ry="48" fill="url(#cloudGradA)" class="cloud-body"/>
+        <ellipse cx="200" cy="95"  rx="55" ry="42" fill="url(#cloudGradA)" class="cloud-body"/>
+        <ellipse cx="230" cy="120" rx="48" ry="38" fill="url(#cloudGradA)" class="cloud-body"/>
+        <ellipse cx="115" cy="125" rx="52" ry="36" fill="url(#cloudGradA)" class="cloud-body"/>
+        <ellipse cx="180" cy="130" rx="50" ry="32" fill="url(#cloudGradA)" class="cloud-body"/>
+      </g>
+    </symbol>
+
+    <symbol id="cloudShapeB" viewBox="0 0 300 180">
+      <g filter="url(#softEdge2)">
+        <ellipse cx="70"  cy="115" rx="50" ry="38" fill="url(#cloudGradB)" class="cloud-body"/>
+        <ellipse cx="130" cy="80"  rx="58" ry="46" fill="url(#cloudGradB)" class="cloud-body"/>
+        <ellipse cx="190" cy="90"  rx="60" ry="44" fill="url(#cloudGradB)" class="cloud-body"/>
+        <ellipse cx="240" cy="125" rx="50" ry="38" fill="url(#cloudGradB)" class="cloud-body"/>
+        <ellipse cx="160" cy="135" rx="60" ry="36" fill="url(#cloudGradB)" class="cloud-body"/>
+      </g>
+    </symbol>
+
+    <symbol id="cloudShapeC" viewBox="0 0 300 180">
+      <g filter="url(#softEdge)">
+        <ellipse cx="85"  cy="105" rx="56" ry="42" fill="url(#cloudGradC)" class="cloud-body"/>
+        <ellipse cx="155" cy="78"  rx="66" ry="50" fill="url(#cloudGradC)" class="cloud-body"/>
+        <ellipse cx="215" cy="100" rx="58" ry="44" fill="url(#cloudGradC)" class="cloud-body"/>
+        <ellipse cx="135" cy="130" rx="55" ry="34" fill="url(#cloudGradC)" class="cloud-body"/>
+        <ellipse cx="200" cy="135" rx="50" ry="32" fill="url(#cloudGradC)" class="cloud-body"/>
+      </g>
+    </symbol>
+
+    <symbol id="cloudShapeD" viewBox="0 0 300 180">
+      <g filter="url(#softEdge2)">
+        <ellipse cx="75"  cy="100" rx="52" ry="40" fill="url(#cloudGradD)" class="cloud-body"/>
+        <ellipse cx="145" cy="82"  rx="62" ry="48" fill="url(#cloudGradD)" class="cloud-body"/>
+        <ellipse cx="210" cy="95"  rx="58" ry="44" fill="url(#cloudGradD)" class="cloud-body"/>
+        <ellipse cx="240" cy="125" rx="46" ry="36" fill="url(#cloudGradD)" class="cloud-body"/>
+        <ellipse cx="120" cy="130" rx="56" ry="34" fill="url(#cloudGradD)" class="cloud-body"/>
+        <ellipse cx="185" cy="135" rx="52" ry="30" fill="url(#cloudGradD)" class="cloud-body"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- horizon silhouette (mountains / campus) -->
+<!--  placed inside hero at runtime -->
+
+<!-- ticket data extracted verbatim from source -->
+<script>
+const T = [
+
+/* ═══ TICKET 01 — Topological sort ═══ */
+{n:"01",t:"Topological sort",q_text:"Topological sort. Concept and applications of the algorithm. Complexity. Example problems on topological sorting.",
+brief:`<div class="kbox"><b>Core idea.</b> A topological sort of an acyclic directed graph G is an ordering of its vertices such that for every edge a → b vertex <b>a</b> comes <b>before</b> vertex b.</div>
+<b>Algorithm idea:</b> run DFS; append a vertex to the answer <b>after</b> all of its descendants are processed (post-order). Reverse the list at the end.
+<b>Important:</b> a graph with a cycle has no topological order; the order may be non-unique.
+<div class="abox">Complexity — <span class="ha">O(V + E)</span> (a plain DFS on adjacency lists).</div>`,
+s:[
+{h:"Definition · Topological sort",b:`A <b>topological sort</b> of an acyclic graph G is an ordering of the vertices V(G) such that for every edge (a, b) ∈ E(G) vertex <b>a</b> appears before vertex b (the edge goes a → b).`},
+{h:"Remarks",b:`<b>Remark 1.</b> A graph with a cycle has <b>no topological order by definition</b>. Proof: draw any cycle and try to place its vertices according to the definition — it is impossible.
+<b>Remark 2.</b> The order may be <b>non-unique</b>.`},
+{h:"Algorithm description",b:`For every unvisited vertex v the algorithm first recursively visits all unvisited neighbours and only <b>then</b> appends v itself to the result. After all vertices are processed the list is <b>reversed</b>.
+<b>Why does it work?</b> Take any edge a → b and show that in the pre-reverse list b is always written before a (after reverse — the opposite).
+• If a is visited before b: from a we follow the edge a → b into b; dfs(b) finishes and appends b before dfs(a) finishes. So b is written before a.
+• If b is visited before a: since the graph is acyclic, a is unreachable from b. So dfs(b) finishes and writes b before a is ever entered.
+In both cases b is written strictly before a. After reverse the order becomes correct.`,
+c:`ans = []                       # resulting list of vertices, empty for now
+
+def dfs(v):                    # depth-first search from vertex v
+    used[v] = True             # mark v visited as soon as we enter it
+    for u in adj[v]:           # iterate over all neighbours of v (adjacency list)
+        if not used[u]:        # if neighbour u is not visited yet —
+            dfs(u)             # recurse into it
+    ans.append(v)              # all descendants of v done → append v (post-order)
+
+for v in V:                    # outer loop over all vertices of the graph
+    if not used[v]:            # start dfs only from unvisited vertices
+        dfs(v)                 # traverse the whole component reachable from v
+
+ans.reverse()                  # reverse the list → correct topological order`},
+{h:"Example problems",b:`<b>Example 1 (factory).</b> A factory produces n components numbered 1..n. The process is such that to build some parts you first need a set of other ready parts. Determine which components are required to produce part number 1 and in which order to make them. A vertex is a part; draw an edge a → b if part a must be made <b>before</b> part b (a is a component for b) — this is exactly the definition «edge a → b ⟹ a before b». Then the usual DFS with a final reverse yields a valid assembly order: every component comes before the part assembled from it.
+<b>Example 2 (the parade).</b> n soldiers numbered 1..n. The commander must line them up by decreasing height. m pairwise comparisons (a, b) are known: soldier a is taller than soldier b. Each soldier is a vertex, the edge goes from the taller to the shorter one. Run DFS and reverse the list.`},
+{h:"Complexity",b:`This is a plain DFS, the graph is stored as adjacency lists — each vertex and each edge is processed once. Total running time <span class="ha">O(V + E)</span>.`}
+],
+g:[["Topological sort","Linear order of DAG vertices consistent with all edges"],["DAG","Directed Acyclic Graph"],["Post-order","A vertex is written after all its descendants"],["reverse","Reversing the list at the end of the algorithm"],["Adjacency list","adj[v] — neighbours of v, gives O(V+E)"]],
+q:[
+{q:"When is a topological sort impossible?",o:["When the graph is disconnected","When the graph contains a cycle","When there are more vertices than edges","When the graph is weighted"],c:1,e:"With a cycle the vertices cannot be ordered per the definition."},
+{q:"When is a vertex appended in the DFS version?",o:["Immediately on entry","After all its descendants are processed","After reverse","At random"],c:1,e:"Post-order: a vertex is written after everything reachable from it."},
+{q:"Complexity of topological sort on adjacency lists?",o:["O(V·E)","O(V²)","O(V + E)","O(E·log V)"],c:2,e:"It is a plain DFS — O(V + E)."}
+]},
+
+/* ═══ TICKET 02 — Strongly connected components · Kosaraju ═══ */
+{n:"02",t:"Strongly connected components. Kosaraju",q_text:"Finding strongly connected components in a directed graph. Kosaraju's algorithm. Complexity.",
+brief:`<div class="kbox"><b>An SCC</b> is a maximal subgraph of a directed graph in which there is a path between any pair of vertices in <b>both</b> directions.</div>
+<b>Kosaraju's algorithm (3 steps):</b>
+1) DFS on the original graph (like topological sort, but <b>without</b> reverse) — build a stack ordered by finish time;
+2) build the transposed graph (all edges reversed);
+3) pop vertices from the stack and run DFS on the transposed graph — each traversal tree paints exactly one SCC.
+<div class="abox">The whole algorithm is two DFS passes, so <span class="ha">O(V + E)</span>.</div>`,
+s:[
+{h:"Definition · Strongly connected component (SCC)",b:`An <b>SCC</b> is a maximal subgraph of a directed graph in which there is a path between any pair of vertices in both directions.`},
+{h:"Definition · Finding the components",b:`The task is to split the graph into these strongly connected components — in other words, to colour the graph so that vertices of one colour form one SCC.`},
+{h:"Kosaraju's algorithm",b:`The algorithm has three steps:
+1. Traverse the original graph with the DFS used in topological sort (but we do not reverse) — push vertices onto a stack ordered by finish time.
+2. Build the <b>transposed (inverted)</b> graph (keep the original too).
+3. Pop vertices from the end of the stack. If a vertex is unvisited — run a colouring DFS on the transposed graph. Each traversal tree is a separate SCC.`},
+{h:"Why it works",b:`During colouring our DFS can only step into SCCs that were already coloured on previous steps, so it never adds foreign vertices to the current component. This is guaranteed because in the transposed graph the edges between SCCs point backwards — from «later» SCCs (by stack order) to «earlier» ones, which are already processed. Thus one colouring DFS paints only the vertices of a single SCC.`},
+{h:"Implementation",b:`The graph and its inverse are built simultaneously while reading the edges.`,
+c:`n, m = map(int, input().split())     # n vertices, m edges
+g     = [[] for _ in range(n + 1)]   # original graph (adjacency lists)
+rev_g = [[] for _ in range(n + 1)]   # transposed graph (edges reversed)
+
+def dfs(v):                # 1st dfs — builds the finish-order stack
+    used[v] = 1            # mark vertex visited
+    for u in g[v]:         # go over neighbours in the ORIGINAL graph
+        if not used[u]:    # if a neighbour is not visited —
+            dfs(u)         # recurse into it
+    stack.append(v)        # vertex finished → push onto the stack (post-order)
+
+def dfs2(v, k):            # 2nd dfs — colours one SCC with colour k
+    color[v] = k           # assign component number k to the vertex
+    for u in rev_g[v]:     # go over neighbours in the TRANSPOSED graph
+        if color[u] == 0:  # if a neighbour is not coloured yet —
+            dfs2(u, k)     # colour it with the same k
+
+for _ in range(m):                   # read m edges
+    u, v = map(int, input().split()) # edge u → v
+    g[u].append(v)                   # add to the original graph
+    rev_g[v].append(u)               # and the reverse v → u to the transposed one
+
+used = [0] * (n + 1)       # visited array for the 1st dfs
+stack = []                 # vertices in finish-time order
+for v in range(1, n + 1):  # run the 1st dfs from every unvisited vertex
+    if not used[v]:
+        dfs(v)
+
+color = [0] * (n + 1)      # 0 = not coloured yet; otherwise the SCC number
+k = 0                      # component counter
+while stack:               # take vertices from the top of the stack (latest finished first)
+    v = stack.pop()        # pop the top vertex
+    if color[v] == 0:      # if it is not in any SCC yet —
+        k += 1             # start a new component
+        dfs2(v, k)         # colour the whole part reachable via rev_g with colour k`},
+{h:"Complexity",b:`The whole algorithm relies on two DFS passes, so the running time is <span class="ha">O(V + E)</span>.`}
+],
+g:[["SCC","Strongly Connected Component"],["Transposed graph","The graph with all edges reversed"],["Kosaraju","Two DFS: finish order + colouring on the reverse graph"],["color[v]","Number of the component the vertex fell into"],["stack","Vertices in the order the first DFS finished them"]],
+q:[
+{q:"What is a strongly connected component?",o:["A maximal tree","A maximal subgraph with mutual reachability of vertices","Any cycle","A shortest path"],c:1,e:"Between any pair of vertices of an SCC there is a path both ways."},
+{q:"How many DFS passes does Kosaraju use?",o:["1","2","3","log n"],c:1,e:"One for finish order, one on the transposed graph."},
+{q:"On which graph does the second DFS (colouring) run?",o:["On the original","On the transposed","On a spanning tree","On the complement"],c:1,e:"Colouring runs on the inverted graph in decreasing finish-time order."}
+]},
+
+/* ═══ TICKET 03 — DP basics · grasshopper · turtle ═══ */
+{n:"03",t:"Dynamic programming. Grasshopper and turtle",q_text:"Basic concepts of dynamic programming — base, state, transition. The grasshopper and turtle problems. Complexities of the solutions.",
+brief:`<div class="kbox"><b>Dynamic programming</b> solves a problem by solving smaller subproblems.</div>
+<b>Three pillars:</b>
+• <b>State</b> — an intermediate stage that uniquely describes the situation (usually an index dp[i]). The question «where are we?».
+• <b>Base</b> — a state whose value is known up front (like the base of induction).
+• <b>Transition</b> — a formula linking the current state to already-computed subproblems.
+<b>Grasshopper:</b> dp[i] = number of ways to reach step i, dp[1]=1, dp[i]=dp[i-1]+dp[i-2]+dp[i-3] → <span class="ha">O(n)</span>.
+<b>Turtle:</b> dp[i][j] = max coins to reach cell (i,j), transition max(top, left)+cost → <span class="ha">O(n·m)</span>.`,
+s:[
+{h:"Definition · Dynamic programming",b:`An approach that solves a problem through solving smaller subproblems. Example: to compute the n-th Fibonacci number, compute the (n−1)-th and (n−2)-th and apply the transition f(n) = f(n−1) + f(n−2).`},
+{h:"Basic concepts",b:`<b>State</b> — a concrete intermediate stage that uniquely describes the current situation. In code the state almost always becomes an array index dp[i].
+<b>Base</b> — a state whose value is known from the start (the base of the induction). Example: the number of routes to the first step is 1 → dp[1] = 1.
+<b>Transition</b> — a formula linking the current problem to already-computed subproblems (backward DP) or the current state to future ones (forward DP).
+<b>Value</b> — what we store for a state.
+<div class="note">Mnemonic: <b>dp[ state ] = value</b>. Question «where are we?» → Answer «what is the result?».</div>`},
+{h:"Example · Grasshopper",b:`<b>Statement:</b> a grasshopper stands on the first step; compute how many ways it can reach step n if it may jump up by 1, 2 or 3 steps.
+State: i — the step number. Value: dp[i] — number of ways to reach i. Base: dp[1] = 1.
+<b>Approach 1 (lazy recursion):</b>`,
+c:`d = [0] * (n + 1)              # dp array, all zeros initially
+d[1] = 1                       # base: exactly 1 way to stay on step 1
+
+def calc(i):                   # number of ways to reach step i
+    if i < 0:                  # fell below the bottom —
+        return 0               # no such step, 0 ways
+    if d[i] != 0:              # value already computed —
+        return d[i]            # return it from cache (memoisation)
+    d[i] = calc(i - 1) + calc(i - 2) + calc(i - 3)  # transition: sum of 3 previous
+    return d[i]                # stored and returned
+
+print(calc(n))                 # answer — number of ways to reach n`},
+{h:"Grasshopper · forward DP",b:`Standing in state i, push its contribution into the following states. The complexity is the same — <span class="ha">O(n)</span>.`,
+c:`dp = [0] * (n + 1)             # dp array
+dp[1] = 1                      # base
+
+for i in range(1, n + 1):      # go over steps left to right
+    if i + 1 <= n:             # can jump +1 step —
+        dp[i + 1] += dp[i]     # push the current state's contribution forward
+    if i + 2 <= n:             # jump +2 —
+        dp[i + 2] += dp[i]     # add the ways
+    if i + 3 <= n:             # jump +3 —
+        dp[i + 3] += dp[i]     # add the ways
+
+print(dp[n])                   # answer`},
+{h:"Example · Turtle",b:`<b>Statement:</b> a rectangular board, the turtle stands in the top-left corner, each cell holds some number of coins. Find the maximum total on a path to the bottom-right cell (moving only right and down).
+Base: dp[0][0] = cost[0][0]. State: (i, j). Value: dp[i][j] — the max coins on a path to cell (i, j). Transition: we arrived either from the left or from above, so dp[i][j] = max(dp[i−1][j], dp[i][j−1]) + cost[i][j].`,
+c:`dp = [[0] * m for _ in range(n)]   # n×m table filled with zeros
+dp[0][0] = cost[0][0]              # base: the starting cell
+
+for j in range(1, m):              # first row: can only come from the left
+    dp[0][j] = dp[0][j-1] + cost[0][j]
+for i in range(1, n):              # first column: can only come from above
+    dp[i][0] = dp[i-1][0] + cost[i][0]
+
+for i in range(1, n):              # fill the rest of the table
+    for j in range(1, m):
+        # we reach (i,j) from above (i-1,j) or left (i,j-1) — take the better
+        dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + cost[i][j]
+# dp[n-1][m-1] is the answer (max coins to the bottom-right cell)`},
+{h:"Complexities",b:`Grasshopper — <span class="ha">O(n)</span> (one-dimensional DP). Turtle — <span class="ha">O(n·m)</span> (we fill the whole table).`}
+],
+g:[["State","An intermediate stage, the dp index"],["Base","A state with a known value"],["Transition","A formula linking states"],["Value","What we store in dp[state]"],["Forward/backward DP","Push contribution forward / pull from the past"]],
+q:[
+{q:"What is the base of a DP?",o:["The largest state","A state with a known value up front","The number of transitions","The array size"],c:1,e:"The base is like the base of induction — a known starting value."},
+{q:"Transition for the grasshopper (jumps 1,2,3)?",o:["dp[i]=dp[i-1]","dp[i]=dp[i-1]+dp[i-2]+dp[i-3]","dp[i]=2·dp[i-1]","dp[i]=dp[i/2]"],c:1,e:"Sum the ways from the three previous steps."},
+{q:"Complexity of the turtle problem?",o:["O(n)","O(n+m)","O(n·m)","O(n²·m)"],c:2,e:"We fill an n×m table with one operation per cell."}
+]},
+
+/* ═══ TICKET 04 — LIS O(N^2) ═══ */
+{n:"04",t:"Longest increasing subsequence · O(N²)",q_text:"Longest increasing subsequence (LIS) in an array. O(N²) solution by dynamic programming.",
+brief:`<div class="kbox"><b>Problem.</b> Find the length (and the subsequence itself) of the longest strictly increasing subsequence of an array.</div>
+<b>DP idea:</b> dp[i] = length of the LIS <b>ending</b> at a[i]. For each i scan all j &lt; i: if a[j] is less than a[i], we can extend → dp[i] = max(dp[i], dp[j] + 1).
+The answer is the maximum of dp. To restore it, keep a predecessor array prev[i].
+<div class="abox">Two nested loops → <span class="ha">O(N²)</span>.</div>`,
+s:[
+{h:"Idea",b:`For each index i we store the length of the LIS that <b>ends</b> at a[i]: among all increasing subsequences ending with a[i], keep the length of the longest one.
+Go left to right. The current element a[i] may extend some previously found subsequence. Scan all previous a[j] (j less than i): if a[j] is less than a[i], we can potentially extend the one ending at a[j] with a[i]. It remains to check whether the result got longer — compare dp[i] and dp[j] + 1.
+To restore the LIS itself we keep a predecessor array prev: as soon as we realise a[i] continues the chain of a[j], we set prev[i] = j.`},
+{h:"Implementation",b:`At the end we find the position of the maximum of dp, hop back through prev until −1, and reverse the result.`,
+c:`dp   = [1]  * n   # dp[i] — length of the LIS ending at a[i]; at least 1 (the element itself)
+prev = [-1] * n   # prev[i] — index of the previous element of the chain (-1 = start)
+
+for i in range(1, n):              # take each element as the «end» of an LIS
+    for j in range(i):             # look at all previous elements
+        if a[i] > a[j] and dp[i] < dp[j] + 1:   # can extend and it gets longer
+            dp[i]   = dp[j] + 1    # update the LIS length ending at i
+            prev[i] = j            # remember where we came from (for restoration)
+
+ml = max(dp)                       # length of the longest LIS
+i  = dp.index(ml)                  # index where it is achieved
+
+res = []                           # collect the answer from the end
+while i != -1:                     # walk the predecessors until the start
+    res.append(a[i])               # add a chain element
+    i = prev[i]                    # move to the previous one
+res.reverse()                      # collected from the end → reverse`},
+{h:"Complexity",b:`The outer loop over i and the inner over j give <span class="ha">O(N²)</span>; restoring the answer is <span class="ha">O(N)</span>.`}
+],
+g:[["LIS","Longest Increasing Subsequence"],["dp[i]","Length of the LIS ending at a[i]"],["prev[i]","Predecessor for restoring the chain"],["Subsequence","Delete elements, keep the order"]],
+q:[
+{q:"What does dp[i] store in the O(N²) solution?",o:["Minimum up to i","Length of the LIS ending at a[i]","Sum a[0..i]","Index of the maximum"],c:1,e:"Exactly the length of the longest increasing subsequence ending at a[i]."},
+{q:"What is the prev array for?",o:["For speed","To restore the subsequence itself","For sorting","Not needed"],c:1,e:"Following prev backwards collects the LIS elements."},
+{q:"Complexity of this solution?",o:["O(N)","O(N log N)","O(N²)","O(2ⁿ)"],c:2,e:"Two nested loops over the elements."}
+]},
+
+/* ═══ TICKET 05 — LIS O(N log N) ═══ */
+{n:"05",t:"Longest increasing subsequence · O(N log N)",q_text:"Longest increasing subsequence (LIS) in an array. O(N log N) solution using binary search.",
+brief:`<div class="kbox"><b>Idea.</b> dp[k] — index of the number that ends an increasing subsequence of length k (if several, the one with the <b>smallest</b> tail).</div>
+The array a[dp[k]] is monotonically increasing in k, so for each new a[i] we find the length of the longest subsequence it can extend with <b>binary search</b>, then update dp.
+<div class="abox">N elements × binary search → <span class="ha">O(N log N)</span>.</div>`,
+s:[
+{h:"Implementation",b:`dp stores indices; the position is found by binary search thanks to the monotonicity of a[dp[k]].`,
+c:`dp   = [inf] * (n + 1)   # dp[k] — index of the (smallest) tail of an increasing run of length k
+prev = [-1]  * n         # for restoring the answer (as in O(n²))
+dp[0] = -inf             # sentinel tail of the «empty» length-0 subsequence
+best = 0                 # length of the best LIS found
+
+for i in range(len(a)):              # iterate over array elements
+    l, r = 0, n + 1                  # binary-search bounds over the length
+    while r - l > 1:                 # find the largest l: a[dp[l]] < a[i]
+        m = (l + r) // 2             # middle
+        if dp[m] != inf and a[dp[m]] < a[i]:   # length m can be extended by a[i]
+            l = m                    # move the left bound right
+        else:
+            r = m                    # otherwise shrink from the right
+    prev[i]   = dp[l]                # predecessor of a[i] is the tail of length l
+    dp[l + 1] = i                    # a[i] becomes the new tail of length l+1
+    best = max(best, l + 1)          # update the best LIS length
+
+ans = []                             # restore the answer
+best = dp[best]                      # index of the tail of the longest LIS
+while best != -1:                    # walk predecessors to the start
+    ans.append(a[best])
+    best = prev[best]
+ans.reverse()                        # reverse (collected from the end)`},
+{h:"What the algorithm does",b:`We iterate over the array left to right. For the current a[i] we find the longest already-found increasing subsequence that this element can continue. Thanks to the monotonicity of dp we find its length by binary search, then update the value in dp.`},
+{h:"Why dp is monotone",b:`What does dp[k] store? The index of the number ending an increasing subsequence of length k, with the smallest possible tail among all such. Let us show a[dp[1]] &lt; a[dp[2]] &lt; … . If at some step a[dp[k+1]] ≤ a[dp[k]], then dropping the last element of the length-(k+1) subsequence we would get a valid increasing one of length k with a tail smaller than a[dp[k]] — contradicting minimality.
+From monotonicity it follows that binary search can find the largest l for which there is a subsequence of length l ending in a number strictly less than a[i]. Thus a[i] extends it to length l + 1. Restoration goes through prev, just as in the O(N²) solution.`},
+{h:"Complexity",b:`For each of the N elements we do one binary search of O(log N) → <span class="ha">O(N log N)</span>.`}
+],
+g:[["dp[k]","Index of the smallest tail of an increasing run of length k"],["Monotonicity","a[dp[1]] < a[dp[2]] < … — basis for binary search"],["Binary search","Finds l in O(log N)"],["prev[i]","Restoring the answer"]],
+q:[
+{q:"What does dp[k] store in the O(N log N) solution?",o:["The LIS length","Index of the smallest tail of a run of length k","A sum","The element count"],c:1,e:"The index of the number — smallest possible tail of a length-k run."},
+{q:"Why does binary search work?",o:["Array a is sorted","a[dp[k]] increases monotonically in k","dp is filled with zeros","By chance"],c:1,e:"Monotone tails justify binary-searching the position."},
+{q:"Final complexity?",o:["O(N²)","O(N log N)","O(N)","O(log N)"],c:1,e:"N elements × O(log N) per binary search."}
+]},
+
+/* ═══ TICKET 06 — Longest common subsequence ═══ */
+{n:"06",t:"Longest common subsequence of two strings",q_text:"Length of the longest common subsequence (LCS) of two strings. O(N·M) solution by dynamic programming.",
+brief:`<div class="kbox"><b>The LCS</b> of two strings x and y is the longest string z that is a subsequence of both x and y.</div>
+<b>DP:</b> dp[i][j] = length of the LCS of the prefixes x[:i] and y[:j].
+• if x[i−1] == y[j−1]: dp[i][j] = dp[i−1][j−1] + 1;
+• otherwise: dp[i][j] = max(dp[i−1][j], dp[i][j−1]).
+<div class="abox">Fill an (n+1)×(m+1) table → <span class="ha">O(N·M)</span>.</div>`,
+s:[
+{h:"Definition · LCS",b:`Given two strings x and y, the <b>LCS</b> is the longest string z that is a subsequence of both string x and string y.
+A <i>subsequence</i> of a string is a string obtained by deleting some (possibly zero) characters without changing the order of the rest.`},
+{h:"Implementation",b:`Fill an (n+1)×(m+1) matrix with zeros; iterate over pairs of prefix lengths (i, j).`,
+c:`dp = [[0] * (n + 1) for _ in range(m + 1)]   # (m+1)×(n+1) table; row/col 0 = empty prefix
+
+for i in range(1, m + 1):          # i — length of a prefix of x
+    for j in range(1, n + 1):      # j — length of a prefix of y
+        if x[i - 1] == y[j - 1]:   # last characters of the prefixes match —
+            dp[i][j] = dp[i - 1][j - 1] + 1        # take both, +1 to the diagonal
+        else:                      # characters differ —
+            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])  # best of «drop x[i-1]» / «drop y[j-1]»
+
+# dp[m][n] is the LCS length of the whole x and whole y`},
+{h:"Explanation",b:`What do we store? dp[i][j] — the LCS length of the prefixes x[:i] and y[:j]. Consider a pair (i, j):
+1. x[i−1] = y[j−1]: the last characters match, it is always profitable to take them. Then dp[i][j] = dp[i−1][j−1] + 1.
+2. x[i−1] ≠ y[j−1]: both last characters cannot be in the LCS simultaneously. So at least one must be «dropped» — take the maximum: dp[i][j] = max(dp[i−1][j], dp[i][j−1]).
+The DP is non-decreasing in both coordinates: extending one prefix cannot shrink the LCS. So in the mismatch case it is enough to look at the two direct predecessors.`},
+{h:"Complexity",b:`The table is (n+1)×(m+1), O(1) per cell → <span class="ha">O(N·M)</span>.`}
+],
+g:[["LCS","Longest Common Subsequence"],["dp[i][j]","LCS length of prefixes x[:i], y[:j]"],["Diagonal transition","On a match, +1 from dp[i-1][j-1]"],["max transition","On a mismatch, best of the top/left neighbours"]],
+q:[
+{q:"What does dp[i][j] store?",o:["Whether the characters match","LCS length of prefixes x[:i] and y[:j]","Number of differences","A character index"],c:1,e:"The length of the longest common subsequence of the prefixes."},
+{q:"Transition when x[i-1] == y[j-1]?",o:["dp[i-1][j-1] + 1","max(dp[i-1][j], dp[i][j-1])","0","dp[i][j-1]"],c:0,e:"Matching characters are worth taking — +1 along the diagonal."},
+{q:"Complexity?",o:["O(N+M)","O(N·M)","O(N²·M)","O(N log M)"],c:1,e:"We fill the whole N×M table."}
+]},
+
+/* ═══ TICKET 07 — Knapsack ═══ */
+{n:"07",t:"Knapsack problem",q_text:"Knapsack problem: classic statement, dynamic-programming solution in O(N·K), where N is the number of items and K is the capacity.",
+brief:`<div class="kbox"><b>Given:</b> n items, item i has weight wᵢ and value cᵢ; a knapsack of capacity W. Each item may be taken at most once. Find a set of maximum value with total weight ≤ W.</div>
+<b>DP (1-dimensional):</b> dp[j] — maximum value of a set with weight exactly j. Iterate over items; for each one go over weights <b>right to left</b> and update dp[j] = max(dp[j], dp[j−w] + cost).
+<div class="abox">N items × W weights → <span class="ha">O(N·W)</span>.</div>`,
+s:[
+{h:"Definition · Statement",b:`There are n items. Item i has weight wᵢ and value cᵢ. There is a knapsack of capacity W. Each item may be taken at most once. Choose a set of items with total weight at most W and maximum total value.`},
+{h:"Implementation",b:`dp[j] — the maximum value of a set whose total weight is exactly j; −1 means weight j is not reachable yet.`,
+c:`dp = [-1] * (W + 1)   # dp[j] — max value of a set of weight EXACTLY j; -1 = unreachable
+dp[0] = 0             # weight 0 is reachable with the empty set, value 0
+
+for i in range(n):                 # iterate over items one by one
+    w    = ws[i]                   # weight of the current item
+    cost = costs[i]                # its value
+    for j in range(W, w - 1, -1):  # weights RIGHT TO LEFT (so we don't take the item twice)
+        if dp[j - w] != -1 and dp[j] < dp[j - w] + cost:  # j is reachable and becomes more valuable
+            dp[j] = dp[j - w] + cost   # put the item into a set of weight j-w
+
+answer = max(dp)      # answer — best reachable set (of any weight ≤ W)`},
+{h:"Explanation",b:`We iterate over the items one by one. For each one we sweep all possible knapsack weights from large to small. If the current weight can be assembled by «adding» the item to an already-known good state dp[j−w], and the total value becomes higher — we update dp[j].
+<b>Why sweep weights from the end?</b> The key constraint: each item is taken at most once. If we went over j left to right, then dp[j] would be updated from dp[j−w] that already accounts for the current item, and the item would be counted twice. The right-to-left sweep prevents this: when we update dp[j], the value dp[j−w] has not been touched on this step and is guaranteed to be free of item i.`},
+{h:"Complexity",b:`Outer loop over n items, inner over W weights → <span class="ha">O(N·W)</span>.`}
+],
+g:[["W / K","Knapsack capacity"],["dp[j]","Max value of a set of weight exactly j"],["0/1 knapsack","Each item — at most once"],["Reverse sweep","Right to left — so an item is not taken twice"]],
+q:[
+{q:"What does dp[j] store in the 1-D solution?",o:["Weight","Max value of a set of weight exactly j","Number of items","An item index"],c:1,e:"The maximum total value for weight j."},
+{q:"Why are weights swept from right to left?",o:["It is faster","So a single item is not taken twice","To save memory","It does not matter"],c:1,e:"Otherwise dp[j-w] already accounts for the current item — it gets counted twice."},
+{q:"Complexity?",o:["O(N)","O(N·W)","O(N²)","O(W²)"],c:1,e:"N items times W weights."}
+]},
+
+/* ═══ TICKET 08 — Segment tree (max) ═══ */
+{n:"08",t:"Segment tree · range maximum",q_text:"Segment tree for range maximum. Structure description. Build, point update and query operations. Complexities of build, update and query.",
+brief:`<div class="kbox"><b>A segment tree</b> lets you compute a function over a range and change an element in O(log n). Each vertex corresponds to a range of the array; the vertex stores the function over it (here — the maximum).</div>
+Stored as an array, like a binary heap: root = 1, parent = v//2, children 2v and 2v+1. Size — 4·n.
+<div class="abox">Build <span class="ha">O(n)</span>, query <span class="ha">O(log n)</span>, update <span class="ha">O(log n)</span>.</div>`,
+s:[
+{h:"Definition · Segment tree",b:`A segment tree is a data structure that computes a function over a range and allows point modification in fairly small time. Built over an array: each vertex corresponds to a range. Usually stored as an array of vertices (a binary heap):
+• root = 1
+• parent(v) = v // 2
+• left_son(v) = 2·v
+• right_son(v) = 2·v + 1
+If vertex v corresponds to range [vl, vr], its children get [vl, vm] and [vm+1, vr], where vm = (vl + vr) // 2. Leaves (vl == vr) hold the array elements. In this ticket the function is the <b>maximum</b> (neutral element −∞).`},
+{h:"Build · O(n)",b:`Build recursively: every vertex stores the maximum of its range. Each element is processed exactly once → <span class="ha">O(n)</span>.`,
+c:`def build(a, t, v, vl, vr):    # v — current vertex, [vl,vr] — its range
+    if vl == vr:               # a single-element range — a leaf
+        t[v] = a[vl]           # store the array element in the leaf
+        return
+    vm = (vl + vr) // 2        # middle of the range
+    build(a, t, 2*v,     vl,     vm)      # build the left child [vl, vm]
+    build(a, t, 2*v + 1, vm + 1, vr)      # build the right child [vm+1, vr]
+    t[v] = max(t[2*v], t[2*v + 1])        # vertex = max of its two children
+
+n = len(a)                     # array size
+t = [float('-inf')] * (4 * n)  # tree: 4n cells, neutral for max = -∞
+build(a, t, 1, 0, n - 1)       # build from root v=1 over range [0, n-1]`},
+{h:"Why 4·n cells",b:`For n elements the tree height is ⌈log₂ n⌉, and the number of vertices does not exceed 2^(⌈log₂ n⌉+1) − 1. In the worst case (when n is not a power of two) the child index grows to almost 4n. A reserve of 4n guarantees no index goes out of bounds. Example: n = 5 → at most 2⁴ − 1 = 15 &lt; 20 = 4·5.`},
+{h:"Query · range maximum · O(log n)",b:`Descend from the root; three cases: the ranges do not intersect → neutral (−∞); the vertex range is entirely inside the query → the vertex value; otherwise — recurse into both children and take the max.`,
+c:`def get_max(t, v, vl, vr, l, r):   # [vl,vr] — vertex range, [l,r] — query
+    if vr < l or r < vl:           # ranges do not intersect —
+        return float('-inf')       # return the neutral element (does not affect max)
+    if l <= vl and vr <= r:        # vertex range entirely inside the query —
+        return t[v]                # ready answer from the vertex
+    vm = (vl + vr) // 2            # otherwise split and go into both children
+    fl = get_max(t, 2*v,     vl,     vm, l, r)   # max in the left part
+    fr = get_max(t, 2*v + 1, vm + 1, vr, l, r)   # max in the right part
+    return max(fl, fr)             # combine the children's results`},
+{h:"Update · point change · O(log n)",b:`Change the value at position pos and recompute the vertices on the path from the leaf to the root.`,
+c:`def update(t, v, vl, vr, pos, new_val):   # pos — index, new_val — new value
+    if vl == vr:                   # reached the target leaf —
+        t[v] = new_val             # change the value in the leaf
+        return
+    vm = (vl + vr) // 2            # middle
+    if pos <= vm:                  # position in the left half —
+        update(t, 2*v,     vl,     vm, pos, new_val)   # descend left
+    else:                          # otherwise in the right —
+        update(t, 2*v + 1, vm + 1, vr, pos, new_val)   # descend right
+    t[v] = max(t[2*v], t[2*v + 1]) # recompute the vertex on the way back`},
+{h:"Complexities",b:`Build — <span class="ha">O(n)</span>. Query — <span class="ha">O(log n)</span> (O(1) work per level, depth O(log n)). Update — <span class="ha">O(log n)</span>.
+<div class="note">For the minimum the structure is identical: max → min, neutral element +∞.</div>`}
+],
+g:[["Segment tree","Range function + point update in O(log n)"],["vm","Range middle (vl+vr)//2"],["Neutral element","−∞ for max, +∞ for min"],["4·n","Guaranteed array size"],["root = 1","Root, children 2v and 2v+1"]],
+q:[
+{q:"How many cells are allocated for a segment tree over n elements?",o:["n","2n","4n","n log n"],c:2,e:"4n guarantees child indices stay in bounds."},
+{q:"Neutral element for the maximum?",o:["0","+∞","−∞","1"],c:2,e:"max with −∞ does not spoil the answer when ranges don't intersect."},
+{q:"Complexity of a range-maximum query?",o:["O(1)","O(log n)","O(n)","O(n log n)"],c:1,e:"Tree depth O(log n), O(1) per level."}
+]},
+
+/* ═══ TICKET 09 — Segment tree (sum) ═══ */
+{n:"09",t:"Segment tree · range sum",q_text:"Segment tree for range sum. Structure description. Build, point update and query operations. Complexities.",
+brief:`<div class="kbox"><b>The structure is fully analogous</b> to the segment tree for min/max. The only difference — instead of min/max the operation is <b>addition</b>; each vertex stores the sum of its range.</div>
+What changes: Build and Update: t[v] = t[2v] + t[2v+1]; Query: neutral element is <b>0</b>.
+<div class="abox">Build <span class="ha">O(n)</span>, query and update <span class="ha">O(log n)</span>.</div>`,
+s:[
+{h:"Description",b:`The sum segment tree is fully analogous to the min tree: the same heap-array (root = 1, parent = v//2, children 2v and 2v+1), the same ranges [vl, vr] with middle vm = (vl+vr)//2, leaves hold the elements. The only difference is the function and the neutral element:
+• <b>Build:</b> t[v] = t[2v] + t[2v+1] (instead of min/max)
+• <b>Query:</b> neutral element is 0 (instead of ±∞)
+• <b>Update:</b> t[v] = t[2v] + t[2v+1]`},
+{h:"Build · Query · Update",b:`Full implementation of the three operations:`,
+c:`def build_sum(a, t, v, vl, vr):    # build the sum tree
+    if vl == vr:                   # a leaf —
+        t[v] = a[vl]               # store the array element
+        return
+    vm = (vl + vr) // 2            # middle
+    build_sum(a, t, 2*v,     vl,     vm)      # build the left child
+    build_sum(a, t, 2*v + 1, vm + 1, vr)      # build the right child
+    t[v] = t[2*v] + t[2*v + 1]     # vertex = SUM of its children
+
+def get_sum(t, v, vl, vr, l, r):   # range-sum query on [l, r]
+    if vr < l or r < vl:           # no intersection with the query —
+        return 0                   # neutral for sum = 0
+    if l <= vl and vr <= r:        # vertex range inside the query —
+        return t[v]                # return the vertex sum
+    vm = (vl + vr) // 2
+    fl = get_sum(t, 2*v,     vl,     vm, l, r) # sum of the left part
+    fr = get_sum(t, 2*v + 1, vm + 1, vr, l, r) # sum of the right part
+    return fl + fr                 # add the children's results
+
+def update_sum(t, v, vl, vr, pos, new_val):   # point update
+    if vl == vr:                   # the target leaf —
+        t[v] = new_val             # change the value
+        return
+    vm = (vl + vr) // 2
+    if pos <= vm:                  # position on the left —
+        update_sum(t, 2*v,     vl,     vm, pos, new_val)
+    else:                          # position on the right —
+        update_sum(t, 2*v + 1, vm + 1, vr, pos, new_val)
+    t[v] = t[2*v] + t[2*v + 1]     # recompute the vertex sum`},
+{h:"Usage example",b:`For a = [3, 1, 4, 1, 5, 9, 2, 6]: get_sum on [1..4] = 1+4+1+5 = 11; after update_sum(2, 10): get_sum on [1..4] = 1+10+1+5 = 17.`,
+c:`a = [3, 1, 4, 1, 5, 9, 2, 6]   # source array
+n = len(a)                     # its size
+t = [0] * (4 * n)              # sum tree: 4n cells, neutral = 0
+build_sum(a, t, 1, 0, n - 1)   # build the tree
+
+print(get_sum(t, 1, 0, n - 1, 1, 4))     # sum on [1..4] = 1+4+1+5 = 11
+update_sum(t, 1, 0, n - 1, 2, 10)        # a[2] = 10 (was 4)
+print(get_sum(t, 1, 0, n - 1, 1, 4))     # now 1+10+1+5 = 17`},
+{h:"Complexities",b:`Build — <span class="ha">O(n)</span>, range-sum query and update — <span class="ha">O(log n)</span>.`}
+],
+g:[["Neutral element","0 for sum"],["t[v]","Sum of the vertex range"],["Build","t[v] = t[2v] + t[2v+1]"],["Query","Splitting the query into O(log n) ranges"]],
+q:[
+{q:"Neutral element for a sum query?",o:["−∞","0","1","+∞"],c:1,e:"0 does not change the sum when ranges don't intersect."},
+{q:"How does the sum tree differ from the min tree?",o:["Array structure","Only the function: + instead of min, neutral 0","Height","Number of leaves"],c:1,e:"Same structure, the operation and neutral element change."},
+{q:"Complexity of a point update?",o:["O(1)","O(log n)","O(n)","O(n log n)"],c:1,e:"We climb from the leaf to the root — O(log n)."}
+]},
+
+/* ═══ TICKET 10 — Binary search trees ═══ */
+{n:"10",t:"Binary search trees (BST)",q_text:"Binary search trees. Build, insert, delete. Give an example of each operation. Complexities.",
+brief:`<div class="kbox"><b>A BST</b> is a binary tree where, for every node, all keys in the <b>left</b> subtree are strictly less than its key and all keys in the <b>right</b> one are strictly greater.</div>
+• <b>Search/insert:</b> descend from the root, turning left or right by comparing keys; insert at the first empty spot.
+• <b>Delete:</b> three cases — leaf (remove), one child (replace with it), two children (replace with the minimum of the right subtree).
+• <b>Build from a sorted array</b> in O(n): the middle element is the root, recurse on the left/right.
+<div class="abox">All operations — <span class="ha">O(h)</span>: a balanced tree <span class="ha">O(log n)</span>, a degenerate one (a chain) — <span class="ha">O(n)</span>.</div>`,
+s:[
+{h:"Definition · Binary search tree",b:`A <b>binary search tree</b> (BST) is a data structure in the form of a binary tree, where each node has a key, a left and a right child (or their absence), and for every node v:
+• all keys in the <b>left</b> subtree of v are strictly less than v's key;
+• all keys in the <b>right</b> subtree of v are strictly greater than v's key.
+In other words, everything to the left of a node is smaller, everything to the right is larger. A node looks like this:`,
+c:`class Node:
+    def __init__(key):
+        key   = key
+        left  = None      # left child
+        right = None      # right child`},
+{h:"Search",b:`We want to find the node with key key, starting from node. <b>Logic:</b> if the current node is empty — the element is absent; if the key matches — found; if the key is less than the current — go to the left subtree, if greater — to the right. Each step strictly descends one level lower.`,
+c:`def search(node, key):
+    if node is None:               # reached an empty spot — element absent
+        return None
+    if key == node.key:            # found
+        return node
+    if key < node.key:             # key smaller — go left
+        return search(node.left, key)
+    else:                          # key greater — go right
+        return search(node.right, key)`},
+{h:"Insert",b:`Descend exactly as in search — left if key is smaller, right if greater. As soon as we reach an empty spot we create a new node there. This is the only place the new key can take without breaking the BST property.`,
+c:`def insert(node, key):
+    if node is None:               # reached an empty spot — insert here
+        return Node(key)
+    if key < node.key:             # key smaller — insert into the left subtree
+        node.left  = insert(node.left, key)
+    elif key > node.key:           # key greater — insert into the right subtree
+        node.right = insert(node.right, key)
+    # if key == node.key — such a key already exists, do nothing
+    return node                    # return the (possibly updated) node`},
+{h:"Delete",b:`Deletion is the trickiest operation. First find the target node v (descend as in search). Once found — three cases:
+1. <b>v has no children</b> (a leaf): just remove it, returning None.
+2. <b>v has one child:</b> remove the node, its only child takes v's place.
+3. <b>v has two children:</b> we cannot just remove v — someone must take its place. Solution: find the <b>minimum in the right subtree</b> (the leftmost node of the right subtree), call it m. Write m's key into node v, then recursively delete m from the right subtree (m has no left child, so it is case 1 or 2).
+<b>Why exactly the minimum of the right subtree?</b> It is larger than everything in the left subtree and smaller than everything else in the right one — so it fits perfectly to take the removed node's place while preserving the BST property.`,
+c:`def find_min(node):
+    # the minimum is the leftmost element
+    while node.left is not None:
+        node = node.left
+    return node
+
+def delete(node, key):
+    if node is None:               # key not in the tree
+        return None
+    if key < node.key:             # key smaller — delete from the left subtree
+        node.left  = delete(node.left, key)
+    elif key > node.key:           # key greater — delete from the right subtree
+        node.right = delete(node.right, key)
+    else:                          # found the node to delete
+        if node.left is None:      # no left child — the right one takes its place
+            return node.right
+        if node.right is None:     # no right child — the left one takes its place
+            return node.left
+        # two children: find the minimum of the right subtree
+        successor = find_min(node.right)
+        node.key = successor.key   # put its key in place of the removed one
+        # delete the minimum from the right subtree
+        node.right = delete(node.right, successor.key)
+    return node`},
+{h:"Building a balanced BST from a sorted array · O(n)",b:`If the elements are already present and <b>sorted</b>, we can build a balanced BST in <span class="ha">O(n)</span> without n insert calls. <b>Idea:</b> take the <b>middle</b> element of the array — it becomes the root. Then everything left of the middle is automatically smaller than the root (recursively build the left subtree), everything right is larger (the right subtree). The root is always the middle of the current subarray, so both subtrees are about equal in size: the tree comes out balanced with height O(log n).
+<b>Why O(n)?</b> Each element is visited exactly once (when it becomes the root of its subrange), so the total work is linear.`,
+c:`def build(arr, left, right):
+    if left > right:               # empty subarray — empty subtree
+        return None
+    mid = (left + right) // 2      # the middle becomes the root
+    node = Node(arr[mid])
+    node.left  = build(arr, left, mid - 1)    # left subtree — from the left half
+    node.right = build(arr, mid + 1, right)   # right subtree — from the right half
+    return node
+
+# usage: first sort, then build
+arr  = sorted([5, 3, 8, 1, 4, 7, 9])
+root = build(arr, 0, len(arr) - 1)`},
+{h:"Complexities",b:`All three operations (search, insert, delete) run in <span class="ha">O(h)</span>, where h is the tree height.
+• In the <b>ideal case</b> (a balanced tree) h = O(log n), so all operations are <span class="ha">O(log n)</span>.
+• In the <b>worst case</b> (the tree degenerates into a list, e.g. when inserting in increasing order) h = O(n), and operations degrade to <span class="ha">O(n)</span>.
+<div class="note">To keep the height O(log n) under arbitrary inserts you need balancing. One elegant way is a <b>Cartesian tree (Treap)</b> with random priorities (the next ticket).</div>`}
+],
+g:[["BST","Binary Search Tree, property left < node < right (strict)"],["h","Tree height — determines the cost of operations"],["Degenerate tree","A chain, h = n, operations O(n)"],["Successor","Minimum of the right subtree when deleting a node with two children"],["Build O(n)","Middle of the sorted array → root, recursion"]],
+q:[
+{q:"Property of a binary search tree?",o:["Left subtree greater than the node","Left strictly smaller, right strictly greater than the node key","All leaves on one level","It is a heap"],c:1,e:"Keys are smaller on the left, larger on the right."},
+{q:"What replaces a node with two children on deletion?",o:["The root","The minimum of the right subtree","Any leaf","The maximum of the whole tree"],c:1,e:"The successor — minimum of the right subtree."},
+{q:"How to build a balanced BST from a sorted array in O(n)?",o:["Insert one by one","Middle element is the root, recurse left/right","Random shuffling","Heap sort"],c:1,e:"The middle becomes the root — both subtrees equal, the tree is balanced."}
+]},
+
+/* ═══ TICKET 11 — Cartesian tree ═══ */
+{n:"11",t:"Cartesian tree (Treap)",q_text:"Cartesian tree. Structure description. Complexity of insert, delete and search. Expressing insert and delete via merge and split. The merge and split operations and their complexities.",
+brief:`<div class="kbox"><b>A Cartesian tree (Treap = Tree + Heap)</b> is a structure where each node holds a <b>key x</b> (as in a BST) and a <b>priority y</b> (as in a max-heap). By keys it is a search tree (left < node < right), by priorities a heap (a node's priority is greater than its children's).</div>
+Priorities are <b>random</b> → expected height O(log n), balancing «for free». Everything builds on two operations:
+• <b>split(node, k)</b> → (left, right): left — keys ≤ k, right — keys > k.
+• <b>merge(left, right)</b> → node: glue together (all keys of left less than keys of right).
+<b>insert</b> = split + two merges; <b>delete</b> = two splits + a merge.
+<div class="abox">Search, insert, delete, split, merge — <span class="ha">O(log n)</span> on average.</div>`,
+s:[
+{h:"Definition · Cartesian tree (Treap)",b:`A <b>Cartesian tree</b> (Treap = Tree + Heap) is a data structure in which each node holds two values:
+• x — the key (as in a BST);
+• y — the priority (as in a heap).
+The tree satisfies two properties at once:
+• <b>By key x</b> — the BST property: for any node all keys in the left subtree are smaller, in the right larger.
+• <b>By priority y</b> — the max-heap property: each node's priority is greater than its children's priorities.
+Hence the name: the tree lives in two dimensions — by x it is a search tree, by y a heap.
+<div class="note"><b>Why the priority?</b> With <b>random</b> priorities y the tree is built uniquely and its expected height is O(log n) — random priorities balance the tree automatically. The priority is taken as a random number for each new node.</div>`,
+c:`import random
+
+class Node:
+    def __init__(key):
+        key      = key
+        priority = random.random()   # random priority
+        left     = None
+        right    = None`},
+{h:"Split",b:`<b>split(node, k)</b> splits the tree rooted at node into two: left — all nodes with key ≤ k, right — all nodes with key > k. Look at the root:
+1. node is empty → two empty trees.
+2. node.key ≤ k → the root and its whole left subtree go to left; recursively split the right subtree split(node.right, k) = (rl, rr); then left = node with node.right = rl, and right = rr.
+3. node.key > k → symmetrically the other way: the root and its right subtree go to right; split the left subtree split(node.left, k) = (ll, lr); then left = ll, right = node with node.left = lr.
+The recursion depth equals the tree height → <span class="ha">O(log n)</span> on average.`,
+c:`def split(node, k):
+    if node is None:
+        return None, None
+    if node.key <= k:                  # root goes to left, split the right subtree
+        rl, rr = split(node.right, k)
+        node.right = rl                # the left part becomes the root's right child
+        return node, rr                # here node == left
+    else:                              # root goes to right, split the left subtree
+        ll, lr = split(node.left, k)
+        node.left = lr                 # the right part becomes the root's left child
+        return ll, node`},
+{h:"Merge",b:`<b>merge(left, right)</b> merges two trees into one provided that <b>all keys of left are less than all keys of right</b>. Choose the new root: the one of the two roots with the <b>greater priority</b> — this preserves the heap property.
+1. One of the trees is empty → return the other.
+2. left's priority is greater → left becomes the root; its left subtree is untouched, the right subtree = merge(left.right, right).
+3. right's priority is greater → right becomes the root; its right subtree is untouched, the left = merge(left, right.left).
+Running time — <span class="ha">O(log n)</span> on average.`,
+c:`def merge(left, right):
+    if left is None:
+        return right
+    if right is None:
+        return left
+    if left.priority > right.priority:     # left becomes the root
+        left.right = merge(left.right, right)   # its right child — merge of the rest
+        return left
+    else:                                  # right becomes the root
+        right.left = merge(left, right.left)    # its left child — merge of the rest
+        return right`},
+{h:"Insert via split and merge",b:`We want to insert key. <b>Idea:</b> create a new node, then split the tree by key into «everything less than key» and «everything greater», and merge three parts: the left one, the new node and the right one. Runs in <span class="ha">O(log n)</span> on average. (split by key − 1 so that all elements strictly less than key go to left.)`,
+c:`def insert(root, key):
+    new_node = Node(key)                   # new node (priority is already random)
+    left, right = split(root, key - 1)     # everything ≤ key-1 and everything > key-1
+    return merge(merge(left, new_node), right)   # assemble: left + new_node + right`},
+{h:"Delete via split and merge",b:`We want to delete key. <b>Idea:</b> do two splits to isolate the target element into a separate tree:
+1. split(root, key − 1) → (left, mid_right): left = everything < key, mid_right = everything ≥ key.
+2. split(mid_right, key) → (mid, right): mid = tree containing only key, right = everything > key.
+3. Simply discard mid and merge left with right.
+Running time — <span class="ha">O(log n)</span> on average.`,
+c:`def delete(root, key):
+    # separate everything less than key
+    left, mid_right = split(root, key - 1)
+    # separate key itself (it ends up in mid, if it exists)
+    mid, right = split(mid_right, key)
+    # discard mid, merge left and right
+    return merge(left, right)`},
+{h:"Search",b:`Search in a Treap works exactly as in a plain BST — descend the tree using the BST property by key x (priorities are irrelevant). Time — <span class="ha">O(log n)</span> on average.`,
+c:`def search(node, key):
+    if node is None:               # reached an empty spot — no such key
+        return None
+    if key == node.key:            # found
+        return node
+    if key < node.key:             # key smaller — go left
+        return search(node.left, key)
+    else:                          # key greater — go right
+        return search(node.right, key)`},
+{h:"Complexities",b:`With random priorities the expected height of a Cartesian tree is O(log n), so all operations run on average in <span class="ha">O(log n)</span>: split, merge, search — O(log n); insert (two splits + two merges) — O(log n); delete (two splits + one merge) — O(log n). A worst case is theoretically possible but with random priorities its probability is exponentially small.`}
+],
+g:[["Treap","Tree + Heap: BST by key x, heap by priority y"],["x / y","Key and (random) priority of a node"],["split(node,k)","Splits into ≤ k and > k, O(log n)"],["merge(left,right)","Glues (keys of left < keys of right), O(log n)"],["insert / delete","Via split + merge / two splits + merge"]],
+q:[
+{q:"By which fields is a treap ordered?",o:["By key — a heap, by priority — a BST","By key — a BST, by priority — a heap","Only by key","Only by priority"],c:1,e:"BST by keys x, max-heap by priorities y."},
+{q:"How is delete expressed via split/merge?",o:["One split","Two splits (isolate key) + merge of the rest","Only merge","Rotations"],c:1,e:"split(root,key-1), split(mid_right,key), discard mid, merge(left,right)."},
+{q:"Complexity of split and merge?",o:["O(1)","O(log n) on average","O(n)","O(n log n)"],c:1,e:"One descent along the tree height, expected height O(log n)."}
+]},
+
+/* ═══ TICKET 12 — Cartesian tree · O(N) build ═══ */
+{n:"12",t:"Cartesian tree · O(N) construction",q_text:"Cartesian tree. Structure description. Complexity of insert, delete and search. Expressing insert and delete via merge and split. Complexities of merge and split. Building a Cartesian tree in O(N) — the algorithm.",
+brief:`<div class="kbox"><b>A Cartesian tree (Treap)</b> is a BST by key x and a max-heap by random priority y. The operations (split, merge, insert, delete, search) run in <span class="ha">O(log n)</span> on average (as in the previous ticket).</div>
+<b>The key point here:</b> if the keys come <b>sorted</b>, the tree is built in <span class="ha">O(N)</span> using a stack, without n insert calls.
+<b>Idea of the O(N) build:</b> sweep the sorted array keeping the «right spine» of the tree on a stack; for a new node pop all stack nodes with a smaller priority — the last popped becomes its left child, and the node itself becomes the right child of the stack top.
+<div class="abox">split/merge/insert/delete/search — <span class="ha">O(log n)</span>; build from a sorted array — <span class="ha">O(N)</span>.</div>`,
+s:[
+{h:"Structure (brief)",b:`A <b>Cartesian tree</b> (Treap = Tree + Heap) — each node holds a key x and a priority y. By key x it satisfies the BST property (smaller on the left, larger on the right), by priority y the max-heap property (a node's priority is greater than its children's). Priorities are random → expected height O(log n). A node:`,
+c:`import random
+
+class Node:
+    def __init__(key):
+        key      = key
+        priority = random.random()   # random priority
+        left     = None
+        right    = None`},
+{h:"Operations split, merge, insert, delete",b:`All operations are expressed via two basic ones — split (split by key) and merge (merge). split(node, k) splits the tree into «keys ≤ k» and «keys > k»; merge(left, right) glues two trees where all keys of left are less than keys of right, choosing as root the node with the greater priority.
+• <b>insert(root, key):</b> split(root, key−1) → (left, right); merge(merge(left, new_node), right).
+• <b>delete(root, key):</b> split(root, key−1) → (left, mid_right); split(mid_right, key) → (mid, right); merge(left, right) (discard mid).
+Each — <span class="ha">O(log n)</span> on average (one or two descents along the height).`,
+c:`def split(node, k):
+    if node is None:
+        return None, None
+    if node.key <= k:                  # root and left subtree go to left
+        rl, rr = split(node.right, k)
+        node.right = rl
+        return node, rr
+    else:                              # root and right subtree go to right
+        ll, lr = split(node.left, k)
+        node.left = lr
+        return ll, node
+
+def merge(left, right):
+    if left is None:  return right
+    if right is None: return left
+    if left.priority > right.priority: # greater priority goes up (heap property)
+        left.right = merge(left.right, right)
+        return left
+    else:
+        right.left = merge(left, right.left)
+        return right
+
+def insert(root, key):
+    new_node = Node(key)
+    left, right = split(root, key - 1)
+    return merge(merge(left, new_node), right)
+
+def delete(root, key):
+    left, mid_right = split(root, key - 1)  # everything < key
+    mid, right = split(mid_right, key)      # mid = only key
+    return merge(left, right)               # discard mid`},
+{h:"Building in O(N) · the algorithm",b:`If the elements are already <b>sorted by key</b>, we build the Treap in <span class="ha">O(N)</span> using a stack, without n insert calls. <b>Idea:</b> sweep the array left to right keeping on a stack the nodes that form the <b>right path</b> from the root to the last inserted node (the new key is always the largest, so it attaches to the right part of the tree). For a new node:
+1. Pop from the stack all nodes whose priority is <b>lower</b> than ours.
+2. The last popped one becomes the <b>left child</b> of the new node (those keys are smaller than the new one, but their priorities are lower).
+3. If the stack is non-empty — the new node becomes the <b>right child</b> of the stack top.
+4. Push the new node onto the stack.
+<b>Why O(N)?</b> Each node is pushed and popped at most once, so the total work is linear. The root is the bottommost element of the stack.`,
+c:`import random
+
+def build_treap(arr):
+    # arr is already sorted by key; create nodes with random priorities
+    nodes = [Node(x) for x in arr]
+    stack = []                         # stack of nodes on the right path from the root
+    for node in nodes:
+        last_popped = None
+        # pop nodes with a smaller priority
+        while stack and stack[-1].priority < node.priority:
+            last_popped = stack.pop()
+        node.left = last_popped        # the last popped one is our left child
+        if stack:                      # we become the right child of the stack top
+            stack[-1].right = node
+        stack.append(node)
+    return stack[0]                    # the root is the bottommost stack element`},
+{h:"Complexities",b:`With random priorities the expected height is O(log n), so split, merge, search, insert, delete run in <span class="ha">O(log n)</span> on average. <b>Build from a sorted array — <span class="ha">O(N)</span></b> (each node is pushed and popped once), noticeably faster than naive n inserts at O(N log n).`}
+],
+g:[["Treap","Tree + Heap: BST by key, heap by priority"],["split / merge","Split by key / merge, O(log n)"],["insert / delete","Via split + merge, O(log n)"],["Right spine","Stack of the right-path nodes — basis of the O(N) build"],["build_treap","O(N) from sorted keys via a stack"]],
+q:[
+{q:"How fast is a Treap built from a sorted array?",o:["O(n log n)","O(N)","O(n²)","O(log n)"],c:1,e:"Via the right-spine stack — each node is pushed/popped once → O(N)."},
+{q:"What is kept on the stack during the O(N) build?",o:["All leaves","Nodes of the right path (spine) from the root","Subtree minimums","Priorities in key order"],c:1,e:"The stack holds the right path from the root to the last inserted node."},
+{q:"What does the last node popped from the stack become?",o:["Right child of the new one","Left child of the new node","The new root","Deleted"],c:1,e:"The last popped (smaller priority) becomes the left child of the new node."}
+]},
+
+/* ═══ TICKET 13 — Fenwick tree ═══ */
+{n:"13",t:"Fenwick tree (prefix sums)",q_text:"Fenwick tree. Build, point update and prefix-sum query operations. Complexities.",
+brief:`<div class="kbox"><b>A Fenwick tree (BIT)</b> is a structure over an array that performs two operations in O(log n): a point update (add x to a[i]) and a prefix-sum query a[0]+…+a[r]. A range sum is sum(l,r) = prefix(r) − prefix(l−1).</div>
+Stored in an array tree of size n (0-indexed). Key idea: tree[i] holds the sum of a chunk ending at position i of length 2^(number of trailing ones of i). The chunk's left bound is <b>F(i) = i &amp; (i + 1)</b> (it clears the right block of ones).
+• <b>query(r):</b> s += tree[r]; r = F(r) − 1.
+• <b>update(i):</b> tree[i] += x; i = i | (i + 1).
+<div class="abox">Update and query — <span class="ha">O(log n)</span>, build — <span class="ha">O(n)</span>.</div>`,
+s:[
+{h:"Definition · Fenwick tree (BIT)",b:`A <b>Fenwick tree</b> is a data structure over an array that performs two operations in O(log n):
+• <b>point update:</b> add some number x to element a[i];
+• <b>prefix-sum query:</b> compute a[0] + a[1] + … + a[r].
+A sum over an arbitrary range [l, r] is computed as the difference of two prefix sums: sum(l, r) = prefix(r) − prefix(l − 1). Stored in a plain array tree of size n (0-indexing). Key idea: tree[i] holds not a single element a[i] but the <b>sum of a chunk</b> of the array ending at position i.`},
+{h:"What tree[i] stores",b:`Define the function <b>F(i) = i &amp; (i + 1)</b>, where &amp; is bitwise AND. Then tree[i] = a[F(i)] + … + a[i] (the sum from F(i) to i inclusive).
+<b>What does F(i) do?</b> The number i + 1 is i with all its trailing ones turned into zeros and the next zero turned into a one. Taking i &amp; (i+1), the differing bits (the run of ones) are zeroed, while everything to the left stays. So F(i) is i with its <b>right block of ones cleared</b>.
+<div class="note">Examples: i=7=111₂ → tree[7]=a[0..7] (8 elements); i=5=101₂ → F=4 → tree[5]=a[4]+a[5]; i=4=100₂ → F=4 → tree[4]=a[4]; i=3=011₂ → F=0 → tree[3]=a[0..3]. The chunk length is always a power of two 2^m, where m is the length of the trailing run of ones.</div>`},
+{h:"Prefix-sum query · O(log n)",b:`query(r) computes a[0]+…+a[r]. tree[r] holds the chunk [F(r), r] — the right part of the prefix. To get the rest (the sum of elements further left) we need prefix(F(r) − 1). Hence the recurrence: query(r) = tree[r] + query(F(r) − 1). At each step take the chunk tree[r] and jump to F(r) − 1. Stop when F(r) = 0.`,
+c:`def query(tree, r):            # sum a[0..r]
+    s = 0
+    while r >= 0:
+        s += tree[r]          # take the chunk [F(r), r]
+        r = (r & (r + 1)) - 1 # jump to F(r) - 1
+    return s
+
+def range_query(tree, l, r):  # sum a[l..r]
+    return query(tree, r) - (query(tree, l - 1) if l > 0 else 0)`},
+{h:"Point update · O(log n)",b:`update(i, x) adds x to a[i] and updates the tree. We must update all cells tree[j] whose chunk [F(j), j] contains position i. The next such index is <b>j = j | (j + 1)</b> (bitwise OR): it clears the trailing block of ones and sets the next bit, doubling the chunk, so i is guaranteed to stay inside. Move right while j < n.`,
+c:`def update(tree, i, x, n):    # add x to a[i]
+    while i < n:
+        tree[i] += x          # update the current cell
+        i = i | (i + 1)       # jump to the next cell covering i`},
+{h:"Build · O(n)",b:`The simplest way is to call update for every element — that is O(n log n). But it can be done faster, in <span class="ha">O(n)</span>: sweep the array left to right. For each i put a[i] into tree[i], then look at the «parent» j = i | (i + 1): if j < n, add tree[i] to tree[j] (since j covers the whole range that i covers and must include its sum). One pass, O(1) per element → O(n).`,
+c:`def build(a):
+    n = len(a)
+    tree = a[:]               # copy the source array
+    for i in range(n):
+        j = i | (i + 1)       # find the "parent"
+        if j < n:
+            tree[j] += tree[i]    # push the sum upward
+    return tree`},
+{h:"Complexities",b:`• <b>Build</b> — <span class="ha">O(n)</span> (a linear sweep pushing values up).
+• <b>Update</b> — <span class="ha">O(log n)</span> (move right, each step adds one bit to the run).
+• <b>Query</b> — <span class="ha">O(log n)</span> (move left, each step removes one bit).
+A Fenwick tree gives the same O(log n) as a segment tree but with a very small constant — one of the fastest practical structures for range sum with updates. It supports only <b>invertible</b> operations (sum, XOR); for min/max it does not work.`}
+],
+g:[["BIT","Binary Indexed Tree (Fenwick tree)"],["F(i) = i & (i+1)","Left bound of chunk tree[i] (clears the run of ones)"],["query → F(r)−1","Query step going left"],["update → i|(i+1)","Update step going right (to the covering cell)"],["sum(l,r)","prefix(r) − prefix(l−1)"]],
+q:[
+{q:"What does tree[i] store in a Fenwick tree?",o:["A single element a[i]","The sum of chunk [F(i), i] of length a power of two","The prefix minimum","An element index"],c:1,e:"The sum of the range from F(i)=i&(i+1) to i."},
+{q:"How to move to the next cell on update?",o:["i = i & (i+1)","i = i | (i + 1)","i = i - 1","i = 2i"],c:1,e:"j = i | (i+1) gives the next covering cell."},
+{q:"Complexity of the linear build?",o:["O(n log n)","O(n)","O(log n)","O(n²)"],c:1,e:"One sweep pushing sums to the parent j=i|(i+1) — O(n)."}
+]},
+
+/* ═══ TICKET 14 — Sparse table ═══ */
+{n:"14",t:"Sparse table",q_text:"Sparse table. Structure description for range-minimum. Build and query operations. Complexities.",
+brief:`<div class="kbox"><b>A sparse table</b> answers «minimum (or maximum) on a range [l, r]» in <span class="ha">O(1)</span> after an O(n log n) preprocessing. The main restriction — the array <b>does not change</b> (a static structure).</div>
+<b>Idea:</b> precompute minimums of all ranges of length 2ᵏ: st[k][i] = min on [i, i + 2ᵏ − 1]. Any range [l, r] is covered by <b>two</b> such (possibly overlapping) ranges. Minimum is idempotent — min(x, x) = x — so overlap is harmless.
+<div class="abox">Build <span class="ha">O(N log N)</span>, query <span class="ha">O(1)</span>, memory <span class="ha">O(N log N)</span>.</div>`,
+s:[
+{h:"Definition · Sparse table",b:`A <b>sparse table</b> is a data structure for queries of the form «minimum (or maximum) on a range [l, r]» in O(1) after an O(n log n) preprocessing.
+<b>Main restriction:</b> the array does not change. A sparse table is a <b>static</b> structure: built once and answers queries, but does not support updates. In return the query time is a true O(1).
+<b>Core idea:</b> precompute minimums on all ranges whose lengths are powers of two. Any range [l, r] can be covered by two such ranges (possibly overlapping). The minimum is an idempotent function (min(x, x) = x), so overlap is harmless.`},
+{h:"Table structure",b:`Keep a 2D array st where st[k][i] holds the minimum on the range [i, i + 2ᵏ − 1] — the minimum of 2ᵏ elements starting at position i:
+• st[0][i] = a[i] — a range of length 2⁰ = 1 (the element itself);
+• st[1][i] = min(a[i], a[i+1]) — length 2;
+• st[2][i] = min(a[i], …, a[i+3]) — length 4;
+• … and so on up to k = ⌊log₂ n⌋.
+The table has size (⌊log₂ n⌋ + 1) × n, i.e. <span class="ha">O(n log n)</span> memory.`},
+{h:"Build · O(n log n)",b:`Build the table bottom-up. Base: st[0][i] = a[i] for all i. Transition: a range of length 2ᵏ starting at i splits exactly in half into two ranges of length 2ᵏ⁻¹ — [i, i+2ᵏ⁻¹−1] and [i+2ᵏ⁻¹, i+2ᵏ−1]. So st[k][i] = min(st[k−1][i], st[k−1][i + 2ᵏ⁻¹]) — the minimum of a large range is the minimum of the two halves' minimums. In total we fill O(n log n) cells at O(1) each → <span class="ha">O(n log n)</span>.`,
+c:`import math
+
+def build(a):
+    n = len(a)
+    LOG = math.floor(math.log2(n)) + 1 if n > 0 else 1
+    # st[k][i] — minimum on [i, i + 2^k - 1]
+    st = [[float('inf')] * n for _ in range(LOG)]
+
+    for i in range(n):                 # base: length-1 ranges
+        st[0][i] = a[i]
+
+    for k in range(1, LOG):            # transition: build length 2^k from length 2^(k-1)
+        for i in range(n - 2 ** k + 1):
+            st[k][i] = min(st[k-1][i], st[k-1][i + 2 ** (k - 1)])
+    return st`},
+{h:"Range-minimum query · O(1)",b:`query(l, r) finds min(a[l], …, a[r]) in O(1). <b>Idea:</b> find k such that 2ᵏ ≤ r − l + 1 (the largest power of two not exceeding the length). Take two overlapping ranges of length 2ᵏ: the left [l, l+2ᵏ−1] = st[k][l] and the right [r−2ᵏ+1, r] = st[k][r−2ᵏ+1]. Together they fully cover [l, r], and the overlap in the middle is harmless because min(x, x) = x (<b>idempotence</b> of minimum). Computing k: k = ⌊log₂(r − l + 1)⌋.`,
+c:`def query(st, l, r):
+    length = r - l + 1
+    k = math.floor(math.log2(length))   # largest power of two ≤ length
+    return min(st[k][l], st[k][r - 2 ** k + 1])`},
+{h:"Precomputing logarithms",b:`Computing math.log2 may be slow with many queries. In practice an array of logarithms is precomputed, and then query uses log[r − l + 1] instead of math.log2(…) — a true <span class="ha">O(1)</span> with no caveats.`,
+c:`def precompute_log(n):
+    log = [0] * (n + 1)
+    for i in range(2, n + 1):
+        log[i] = log[i // 2] + 1       # log[i] = floor(log2(i))
+    return log`},
+{h:"Complexities",b:`• <b>Build</b> — <span class="ha">O(N log N)</span> in time and memory.
+• <b>Query</b> — <span class="ha">O(1)</span> (two table lookups + computing a logarithm).
+• <b>Update</b> — not supported: changing an element requires rebuilding the whole table.`}
+],
+g:[["Sparse table","Sparse table for static RMQ"],["st[k][i]","min on [i, i+2ᵏ−1]"],["Idempotence","min(x,x)=x — ranges may overlap"],["O(1) query","Two overlapping chunks of length 2ᵏ"],["precompute_log","Precomputed logarithms for honest O(1)"]],
+q:[
+{q:"What does st[k][i] store?",o:["A sum","min on the range [i, i+2ᵏ−1]","The minimum's index","A prefix"],c:1,e:"The minimum on a length-2ᵏ range starting at i."},
+{q:"Why does the query work in O(1) with overlapping chunks?",o:["The ranges don't overlap","Minimum is idempotent: min(x,x)=x","A hash is used","By chance"],c:1,e:"Overlapping two length-2ᵏ chunks does not spoil the minimum."},
+{q:"Main restriction of a sparse table?",o:["Large query time","The array must be immutable","Only for sums","Only for small N"],c:1,e:"An update requires a full O(N log N) rebuild."}
+]},
+
+/* ═══ TICKET 15 — Prefix function · KMP ═══ */
+{n:"15",t:"Substring search. Prefix function & KMP",q_text:"Substring search. Prefix function. O(N²) and O(N) algorithms. Knuth–Morris–Pratt (KMP).",
+brief:`<div class="kbox"><b>Problem (Pattern Matching).</b> Given a text S of length N and a pattern T of length M, find all occurrences of T in S.</div>
+The <b>naive algorithm</b> tries the pattern at every position — <span class="ha">O(N·M)</span>. <b>KMP</b> does it honestly in <span class="ha">O(N + M)</span> using the prefix function.
+The <b>prefix function</b> π[i] is the length of the longest <b>proper</b> prefix of the substring s[0..i] that is also its suffix. It is computed in <span class="ha">O(N)</span> with rollbacks.`,
+s:[
+{h:"Definition · Substring search (Pattern Matching)",b:`Given two strings: a text S of length N and a pattern T of length M. We must find all occurrences of T in S.
+The <b>naive algorithm</b> runs in O(N·M): we place the pattern at every possible start position and compare character by character. In the worst case (e.g. S = «aaaaaaa», T = «aaa») it does a lot of redundant work, re-checking the same characters many times. To speed this up to an honest <span class="ha">O(N + M)</span> the Knuth–Morris–Pratt algorithm was invented, based on the prefix function.`},
+{h:"Definition · Prefix function: what it is",b:`Let S be a string. A <b>proper prefix</b> is a prefix that is not equal to the whole string (shorter than it). A <b>proper suffix</b> is defined analogously.
+The <b>prefix function</b> π[i] for position i is the length of the longest proper prefix of the substring s[0..i] that is simultaneously its suffix. In plain words, π[i] tells how large a chunk at the start of the string exactly matches a chunk ending at position i.
+<div class="note">Example: S = «abacaba».
+• i=0: «a» — no proper prefixes, π[0]=0.
+• i=1: «ab» — prefixes {a}, suffixes {b}, no match, π[1]=0.
+• i=2: «aba» — «a» matches, π[2]=1.
+• i=3: «abac» — no match, π[3]=0.
+• i=4: «abaca» — «a» matches, π[4]=1.
+• i=5: «abacab» — «ab» matches, π[5]=2.
+• i=6: «abacaba» — «aba» matches, π[6]=3.
+Array π = [0, 0, 1, 0, 1, 2, 3].</div>`},
+{h:"Definition · Computing the prefix function in O(N)",b:`Naively computing π[i] requires comparing all prefixes and suffixes — O(N³) (or O(N²) with some optimisation). But it can be done in linear time using already-computed values.
+<b>Key idea (search with rollbacks):</b> suppose we already know π[i−1] = j. This means a prefix of length j matches the suffix ending at i−1. We want π[i]. Look at s[i] (the new character at the end) and s[j] (the character right after the matched prefix).
+1. If s[i] == s[j] — the match grew by 1, so π[i] = j + 1.
+2. <b>What if the characters differ?</b> We cannot just reset j to 0. Inside the length-j chunk a smaller prefix could be hiding that is also a suffix of this chunk. Its length is exactly π[j−1]. We roll back j = π[j−1] and try to compare s[i] with s[j] again. Repeat in a while loop until the characters match or j becomes zero.`,
+c:`def prefix_function(s):
+    n = len(s)
+    pi = [0] * n                   # π[0] = 0 (the first character has no proper prefix)
+    for i in range(1, n):          # compute π for each position
+        j = pi[i - 1]              # start from the match length of the previous position
+        while j > 0 and s[i] != s[j]:  # while no match and there is room to roll back
+            j = pi[j - 1]          # roll back
+        if s[i] == s[j]:           # if characters match — increase the prefix length
+            j += 1
+        pi[i] = j
+    return pi`},
+{h:"Remark · why this is O(N)",b:`The while loop inside the for may look suspicious: could we get stuck? Look at the variable j. Over the for loop j increases by at most 1 (in the if block). So over the whole algorithm j grows by at most N in total. Inside the while j strictly decreases (since π[j−1] &lt; j). As j cannot go negative, the total number of decreases cannot exceed the total number of increases. Hence the while body runs at most N times overall. Complexity — <span class="ha">O(N)</span>.`},
+{h:"Definition · Knuth–Morris–Pratt (KMP)",b:`How do we find a pattern T in a text S using the prefix function? Build a new string: <b>P = T + «#» + S</b>. The character «#» is a separator that occurs in neither S nor T. It ensures π never exceeds the pattern length. Now just compute the prefix function of P. If at some position i we get π[i] == |T| (the pattern length), we have found an occurrence. Its start is at position i − |T| + 1.
+<b>KMP complexity:</b> computing the prefix function takes <span class="ha">O(|S| + |T|)</span>. The memory is a π array of the same size. (Spoiler: memory can be optimised to O(|T|) by keeping π only for the pattern and recomputing j on the fly for the text characters.)`,
+c:`def kmp(t, s):
+    p = t + '#' + s                # concatenation: pattern, separator, text
+    pi = prefix_function(p)        # prefix function of the concatenation
+    res = []                       # occurrence positions
+    m = len(t)                     # pattern length
+    for i in range(m + 1, len(p)): # iterate over the text part
+        if pi[i] == m:             # π reached the pattern length —
+            res.append(i - 2 * m)  # start of the occurrence in text s
+    return res`},
+{h:"Complexity",b:`Naive search — <span class="ha">O(N²)</span>. Prefix function — <span class="ha">O(N)</span>. KMP substring search — <span class="ha">O(N + M)</span>.`}
+],
+g:[["Pattern matching","Find all occurrences of pattern T in text S"],["π[i]","Length of the longest proper prefix = suffix of s[0..i]"],["Proper prefix","A prefix not equal to the whole string"],["Rollback j = π[j−1]","Reusing already-computed values"],["KMP","P = T + «#» + S; π[i] = |T| ⟹ an occurrence"]],
+q:[
+{q:"What is π[i]?",o:["Number of occurrences","Length of the longest proper prefix equal to a suffix of s[0..i]","A character index","A substring hash"],c:1,e:"The length of the matching prefix-suffix of the current substring."},
+{q:"Why is the prefix function O(N)?",o:["No loops","j grows ≤1 per step, total rollbacks ≤ total growth","Sorting is used","Binary search"],c:1,e:"Amortisation: the growth of j bounds the number of while rollbacks."},
+{q:"How does KMP find a pattern T of length M in a text?",o:["With hashes","Builds π for P = T + «#» + S and looks for π = M","Sorts the text","With a segment tree"],c:1,e:"A position with π = |T| corresponds to a full pattern occurrence."}
+]},
+
+/* ═══ TICKET 16 — Hashing · Rabin–Karp ═══ */
+{n:"16",t:"Substring search. Hashing & Rabin–Karp",q_text:"Substring search. Hashing. Polynomial hash function. The notion of a collision. Substring search via hashes (Rabin–Karp). Running-time analysis.",
+brief:`<div class="kbox"><b>The polynomial hash</b> of a string s of length n: h(s) = (s[0]·pⁿ⁻¹ + s[1]·pⁿ⁻² + … + s[n−1]) mod m. Equal strings → equal hash; different ones → almost always different.</div>
+A <b>collision</b> is when different objects get the same hash.
+<b>Rabin–Karp:</b> precompute the hash of the pattern t, then compute the hash of each text window s[i:i+|t|] and compare; the first hash costs O(|t|), each next one is recomputed in O(1).
+<div class="abox">Total time — <span class="ha">O(|S| + |T|)</span>.</div>`,
+s:[
+{h:"Definition · Hashing",b:`<b>Hashing</b> an object from a set X is the process of obtaining a hash of that object via a hash function. A <b>hash function</b> is any function f : X → [0, m). A <b>hash</b> is a value in the range [0, m).`},
+{h:"Remark · why hashes",b:`With hashes we can compare objects for equality: if the hashes differ, the objects are definitely different. If they match, with some probability the objects still differ — a so-called <b>collision</b>.
+A <b>hash collision</b> is a situation where different objects get the same hash. To make collisions rarer we need a good function.`},
+{h:"Definition · Polynomial hash function",b:`Let there be a string s = s₀s₁…sₙ₋₁. Then the value of the polynomial hash function with parameters p, m is:
+<span class="ha">h(s) = (s₀·pⁿ⁻¹ + s₁·pⁿ⁻² + … + sₙ₋₁) mod m</span>.
+That is, the polynomial hash literally evaluates a polynomial whose coefficients are the «string characters» at the point p modulo m. To make collisions rarer we need: 1) m a large prime; 2) p a fixed random number larger than the alphabet size.`},
+{h:"Definition · Rabin–Karp algorithm",b:`Let there be strings s and t (|s| ≥ |t|). Task: find all occurrences of t in s.
+Rabin–Karp consists of precomputing the polynomial hash of t (call it hash), then sequentially computing the hash of substrings s[i:i+|t|] and comparing with hash. If they differ — definitely move on. If they match, we can either verify the exact match character by character, or not verify and just declare it an occurrence of t.`},
+{h:"Definition · Running-time analysis",b:`Computing the first hash costs O(|t|). Subsequent substring hashes are recomputed in <b>O(1)</b> (see below). Comparing hashes is O(1). In total we compute |s| − |t| + 1 = O(|s|) hashes, so the overall complexity is <span class="ha">O(|S| + |T|)</span>.
+<b>How to recompute in O(1)?</b> Let |t| = n; the transition from the hash of window s[i:i+n] to that of s[i+1:i+1+n]: from (s_i·pⁿ⁻¹ + s_{i+1}·pⁿ⁻² + … + s_{i+n−1}) mod m we get (s_{i+1}·pⁿ⁻¹ + … + s_{i+n}) mod m. Subtract s_i·pⁿ⁻¹, multiply everything left by p, add s_{i+n} and take modulo m.`,
+c:`def rabin_karp(t, s):
+    n, m = len(s), len(t)
+    if m > n: return []            # pattern longer than text — no occurrences
+    p, MOD = 31, 10**9 + 9         # base and a large prime modulus
+    p_pow = pow(p, m - 1, MOD)     # p^(m-1) mod MOD — weight of the window's leading char
+
+    def h(string):                 # polynomial hash via Horner's scheme
+        x = 0
+        for ch in string:
+            x = (x * p + ord(ch)) % MOD
+        return x
+
+    hp = h(t)                      # pattern hash
+    hw = h(s[:m])                  # hash of the first window of length m
+    res = []
+    for i in range(n - m + 1):     # all window positions
+        if hw == hp and s[i:i+m] == t:   # hashes equal → verify character by character
+            res.append(i)          # confirmed occurrence
+        if i < n - m:              # slide the window by 1 in O(1):
+            # drop the left char (weight p^(m-1)), multiply by p, add the right char
+            hw = ((hw - ord(s[i]) * p_pow) * p + ord(s[i+m])) % MOD
+    return res`},
+{h:"Complexity",b:`Precomputing the hashes is O(M); then N−M+1 window slides at O(1) each. Total on average <span class="ha">O(N + M)</span>. In the worst case (many collisions) — O(N·M), but with a good hash function this is unlikely.`}
+],
+g:[["Hash function","f : X → [0, m); a hash is a value in [0, m)"],["Polynomial hash","A polynomial of characters at point p modulo m"],["p, m","Base (> alphabet) and a large prime"],["Collision","Different objects — same hash"],["Rabin–Karp","Sliding window of hashes, O(|S|+|T|)"]],
+q:[
+{q:"What is a collision?",o:["Same hash for different objects","Equality of objects","Overflow","An input error"],c:0,e:"Different objects, but the same hash."},
+{q:"How are the polynomial-hash parameters chosen?",o:["p and m arbitrary","m — a large prime, p — random > alphabet size","p = m","p — even"],c:1,e:"A large prime m and random p above the alphabet reduce collisions."},
+{q:"Running time of Rabin–Karp?",o:["O(N·M) always","O(|S| + |T|)","O(N log M)","O(M²)"],c:1,e:"First hash O(|T|), each window slide O(1) → O(|S|+|T|)."}
+]},
+
+/* ═══ TICKET 17 — Hash tables ═══ */
+{n:"17",t:"Hash tables",q_text:"Hash tables. Collision-resolution methods (open addressing and chaining). Hash-table operations. Complexities.",
+brief:`<div class="kbox"><b>A hash table</b> implements a dictionary: insert, search and delete in <span class="ha">O(1)</span> on average. The cell index = h(key), 0 ≤ h(key) &lt; M.</div>
+By the pigeonhole principle <b>collisions</b> are inevitable (infinitely many keys, M cells). They are resolved in two ways:
+• <b>Chaining:</b> each cell holds a linked list of all elements with that hash.
+• <b>Open addressing:</b> elements live in the array itself; on a busy cell look for the next free one (linear probing i+1, i+2, …).
+<div class="abox">On average <span class="ha">O(1)</span>, in the worst case — <span class="ha">O(N)</span>. Keep the load factor α ≤ 0.75 by rehashing.</div>`,
+s:[
+{h:"Definition · Hash functions: from simple to complex",b:`<b>Simple ones:</b>
+• <b>Division Hashing:</b> h(x) = x mod M. Fast, but bad when keys are multiples of M. Better take M prime.
+• <b>Polynomial Rolling Hash:</b> h(s) = (Σ s[n−i−1]·pⁱ) mod M.
+• <b>XOR hash:</b> h(x₁, x₂, …) = x₁ ⊕ x₂ ⊕ … Very fast but symmetric (hash {a,b} = hash {b,a}) — fine only if order is irrelevant and collisions are not critical.
+<b>More complex ones:</b>
+• <b>Multiplicative Hashing:</b> h(x) = ⌊M · {x·A}⌋, where A ≈ (√5−1)/2 ≈ 0.618 (golden ratio), {y} is the fractional part. Spreads keys evenly even for poor M.
+• <b>Universal Hashing:</b> pick a, b randomly at initialisation and compute h(x) = ((a·x + b) mod p) mod M, where p is prime, p &gt; M. The collision probability of two keys is ≤ 1/M for any input — a defence against deliberately crafted «bad» inputs (anti-hash attacks).
+• <b>Cryptographic hashes</b> (MD5, SHA-256): an extremely low collision probability, but tens of times slower. Used where security matters (signatures, passwords).`},
+{h:"Definition · Hash table: the basic concept",b:`A <b>hash table</b> is a data structure implementing a dictionary (a set), allowing insert, search and delete of elements in <span class="ha">O(1)</span> on average. It consists of a fixed-size array of size M and a hash function h(x) that turns any key into an array index: 0 ≤ h(x) &lt; M. In an ideal world each key lands in its own cell. But the number of possible keys is infinite, while the array size M is bounded — by the pigeonhole principle <b>collisions</b> inevitably occur. To operate a hash table you must be able to resolve them.`},
+{h:"Definition · Chaining",b:`The most intuitive method. The hash-table array consists not of the elements themselves but of references to linked lists (or dynamic arrays). If several elements got the same hash, we simply put them all in the list at that index.
+• <b>Insert:</b> compute i = h(x). Walk the list at i; if x is not there — append it.
+• <b>Search:</b> i = h(x); linearly scan list i looking for x.
+• <b>Delete:</b> i = h(x); find x in the list and remove the node.`,
+c:`buckets = [[] for _ in range(M)]   # each cell is a list (a chain)
+
+def insert(key):
+    b = buckets[hash(key) % M]
+    if key not in b:               # if the key is not present yet —
+        b.append(key)              # add to the chain
+
+def search(key):
+    return key in buckets[hash(key) % M]   # look in the right chain
+
+def delete(key):
+    b = buckets[hash(key) % M]
+    if key in b:
+        b.remove(key)`},
+{h:"Definition · Open addressing",b:`In this method there are no lists. All elements are stored directly in the array. If cell i = h(x) is already taken by another element, we look for the next free cell by a certain rule.
+The simplest rule is <b>linear probing</b>: if the cell is busy, look at i+1, then i+2 and so on modulo M until we find an empty spot.
+• <b>Insert:</b> go right from h(x) until an empty cell. Write there.
+• <b>Search:</b> go right from h(x). If we meet our element — success. If we meet an <b>empty</b> cell — the element is not in the table (otherwise it would lie here or earlier).
+• <b>Delete (the tricky part):</b> we cannot simply erase an element (make the cell empty) — that would «break the probe chain» for other elements that, due to collisions, passed this cell. So instead of physical deletion we put a special marker <b>DELETED</b> into the cell. On search we walk through them, and on insert we may use them as free space.`},
+{h:"Example · open addressing (M = 7, h(x) = x mod 7)",b:`Initial state after a few inserts: indices 0..6 = [14, EMPTY, 2, 10, 17, EMPTY, 6].
+• <b>Search x = 10:</b> h(10) = 3. Cell 3 holds 10 — found immediately.
+• <b>Search x = 24:</b> h(24) = 3. Cell 3: 10 ≠ 24, move on. Cell 4: 17 ≠ 24. Cell 5: EMPTY — stop, 24 is absent (had it existed, it would have landed exactly here).
+• <b>Insert x = 11:</b> h(11) = 4. Cell 4 is busy (17). Cell 5: EMPTY — insert 11 here.
+• <b>Delete x = 17:</b> h(17) = 3. Cell 3: 10 ≠ 17, cell 4: 17 — found. We cannot set EMPTY: then a search for 11 would stop at cell 4 and never reach cell 5 (where 11 lies). We set the <b>DELETED</b> marker. Now a search for 11 passes the marker and finds 11 in cell 5.`},
+{h:"Listing · open addressing (EMPTY / DELETED)",b:`Full implementation with the EMPTY and DELETED markers:`,
+c:`EMPTY    # cell never used
+DELETED  # cell was deleted
+
+table = [EMPTY] * M     # array of size M
+size  = 0               # number of elements (not the capacity)
+
+def h(key):
+    return hash(key) % M
+
+def insert(key):
+    i = h(key)
+    first_deleted = None
+    while table[i] != EMPTY:
+        if table[i] == key:
+            return                      # already present, do nothing
+        if table[i] == DELETED and first_deleted is None:
+            first_deleted = i           # remember the first DELETED
+        i = (i + 1) % M
+    # reached EMPTY, so key was not in the table;
+    # we didn't place into first_deleted earlier until sure key is absent
+    pos = first_deleted if first_deleted is not None else i
+    table[pos] = key
+    size += 1
+
+def search(key):
+    i = h(key)
+    while table[i] != EMPTY:
+        if table[i] == key:
+            return True                 # found
+        i = (i + 1) % M
+    return False                        # hit an empty cell
+
+def delete(key):
+    i = h(key)
+    while table[i] != EMPTY:
+        if table[i] == key:
+            table[i] = DELETED          # set a marker, not EMPTY
+            size -= 1
+            return
+        i = (i + 1) % M`},
+{h:"Remark · chaining or open addressing?",b:`Chaining is simpler to implement (especially deletion) and does not break when the table is filled over 100%. Open addressing uses the CPU cache far better (data lies contiguously in memory), so in practice (e.g. dict in Python or std::unordered_map with custom allocators) it is often faster, but requires strict control so the table does not overflow.`},
+{h:"Definition · Complexity and Load Factor",b:`<b>Load Factor</b> α = N / M, where N is the number of elements and M the table size.
+• <b>On average:</b> if the hash function is good and distributes keys evenly, the chain length (or cluster length in open addressing) is a small constant. All operations run in an honest <span class="ha">O(1)</span>.
+• <b>In the worst case:</b> all N elements may get the same hash and land in one cell (or cluster). Then the table degenerates into a plain list and all operations take <span class="ha">O(N)</span>. The defence is randomisation in the hash function.
+<b>Rehashing:</b> for the table to run in O(1) we must keep α ≤ 0.75 (an empirical standard). As soon as there are too many elements, we create a new array twice the size and <b>rehash</b> all existing elements to new places. This takes O(N), but happens rarely, so the amortised insert complexity stays O(1).`}
+],
+g:[["Hash table","A dictionary in O(1) average; index = h(key) mod M"],["Collision","Different keys in one cell (inevitable, pigeonhole)"],["Chaining","A linked list in each cell"],["Open addressing","Linear probing + DELETED marker"],["α (load factor)","N/M; if α > 0.75 — rehash (double)"]],
+q:[
+{q:"Why are collisions in a hash table inevitable?",o:["A bad hash function","Infinitely many keys but M cells — pigeonhole principle","A small array","They are avoidable"],c:1,e:"Pigeonhole: infinitely many keys into finitely many M cells."},
+{q:"Why the DELETED marker on deletion in open addressing?",o:["For speed","So the probe chain of other elements is not broken","To save memory","Not needed"],c:1,e:"EMPTY would cut off the search for elements that passed by due to collisions."},
+{q:"What is done when the load factor α > 0.75?",o:["Nothing","Rehash: a new array ×2 and redistribution","Delete elements","Change the hash function every time"],c:1,e:"Double the table and rehash — amortised O(1)."}
+]},
+
+/* ═══ TICKET 18 — Sweep line & two pointers ═══ */
+{n:"18",t:"Sweep line & two pointers",q_text:"Sweep line. Concept and applications. Two pointers. Concept and applications. Complexities on example problems.",
+brief:`<div class="kbox"><b>The sweep line</b> is a technique for problems on the number line: collect the «interesting» moments into a list of <b>events</b>, sort them by coordinate and go left to right maintaining a current state. Each event is processed exactly once.</div>
+<div class="kbox"><b>Two pointers</b> is a technique for arrays/strings: the answer for a pair (l, r) is computed from the answer for the previous pair. Both pointers move only forward → at most 2n steps total.</div>
+<div class="abox">Sweep line — <span class="ha">O((n+m) log(n+m))</span> (the sort dominates). Two pointers — <span class="ha">O(n)</span>.</div>`,
+s:[
+{h:"Definition · Sweep line",b:`The <b>sweep line</b> is an algorithmic technique for problems on the number line. The idea: collect all the «interesting» moments (the start of a segment, the end of a segment, the appearance of a point) into a list of <b>events</b>, sort them by coordinate and walk left to right maintaining some current state. Instead of scanning all objects for every query, we process each event exactly once.
+Typical events: «segment started» (update the state on entry), «segment ended» (update on exit), «point / query» (read the state as the answer).`},
+{h:"Sweep line · the «cats» example",b:`On the number line live n cats (points xᵢ), and m segments [lⱼ, rⱼ] are given. For each segment find how many cats fell inside. Collect events and sort by coordinate: (x, "cat"), (l, "start"), (r, "end"). Go left to right: meet a cat — increase the counter cats; meet a segment start — remember the current cats; segment end — answer = cats − cats_at_start. Time = the sort = <span class="ha">O((n+m) log(n+m))</span>.`,
+c:`events = []
+for x in cat_positions:                # each cat is an event at point x
+    events.append((x, 0, "cat"))       # 0 — so a cat comes before a segment end at equal x
+for j, (l, r) in enumerate(segments):
+    events.append((l, -1, "start", j)) # start of segment j
+    events.append((r, 1, "end", j))    # end of segment j
+
+events.sort()                          # sort all events by coordinate
+cats = 0                               # how many cats passed on the left
+cats_at_start = [0] * m                # value of cats when each segment started
+ans = [0] * m                          # answers per segment
+for event in events:                   # go left to right
+    if event[2] == "cat":              # met a cat —
+        cats += 1                      # increase the counter
+    elif event[2] == "start":          # segment start —
+        cats_at_start[event[3]] = cats # remember the current number of cats
+    else:                              # segment end —
+        ans[event[3]] = cats - cats_at_start[event[3]]   # cats inside = the difference`},
+{h:"Sweep line · the «peak load» example",b:`n developers work over intervals [lᵢ, rᵢ]. Find the moment when the most people work simultaneously. For each one create a «came» event (+1) at lᵢ and a «left» event (−1) at rᵢ+1. Sort, go left to right maintaining a counter online; the maximum of the counter is the answer. Time — <span class="ha">O(n log n)</span>.`,
+c:`events = []
+for l, r in workers:
+    events.append((l, 1))         # +1: a developer arrived at l
+    events.append((r + 1, -1))    # -1: left at r+1 (segment [l, r] is inclusive)
+
+events.sort()                     # sort events by time
+online = best = best_time = 0     # current count / maximum / time of the maximum
+for time, delta in events:        # go over events left to right
+    online += delta               # update the counter (came / left)
+    if online > best:             # beat the record —
+        best = online             # remember the new maximum
+        best_time = time          # and when it was reached`},
+{h:"Definition · Two pointers",b:`The <b>two-pointers</b> method is a technique for problems on arrays or strings where the answer for each pair (l, r) is computed from the answer for the previous pair. Both pointers move only in one direction, so in total each makes at most n steps → <span class="ha">O(n)</span>. This gives linear time without extra memory.`},
+{h:"Two pointers · example (longest subarray with sum ≤ k)",b:`Given an array of non-negative numbers and a number k. Find the length of the longest subarray with sum ≤ k. Key observation: if the sum on [l, r] exceeds k, then with r fixed it is pointless to move l left — the sum only grows. As r increases the left edge only grows — left never rolls back.`,
+c:`def max_subarray(a, k):
+    n = len(a)
+    left = 0                       # left pointer of the window
+    current_sum = 0                # sum of elements inside the window [left, right]
+    best = 0                       # length of the best subarray
+    for right in range(n):         # the right pointer moves forward
+        current_sum += a[right]    # add the new right element
+        while current_sum > k:     # the sum exceeded k —
+            current_sum -= a[left] # move the left edge, dropping a[left]
+            left += 1              # left only grows, never rolls back
+        best = max(best, right - left + 1)   # update the max window length
+    return best`},
+{h:"Two pointers · example (merge from merge sort)",b:`Merging two sorted arrays: two pointers i and j look at the current minimums; at each step take the smaller one and advance the corresponding pointer. <span class="ha">O(n + m)</span>.`,
+c:`def merge(a, b):
+    result = []
+    i = j = 0                      # pointers at the starts of a and b
+    while i < len(a) and j < len(b):   # while neither has finished —
+        if a[i] <= b[j]:           # the current minimum is in a —
+            result.append(a[i]); i += 1    # take a[i], advance i
+        else:                      # the minimum is in b —
+            result.append(b[j]); j += 1    # take b[j], advance j
+    result.extend(a[i:])           # append the tail of a (if any)
+    result.extend(b[j:])           # append the tail of b (if any)
+    return result`},
+{h:"Complexities",b:`Sweep line — usually dominated by sorting the events: <span class="ha">O((n+m) log(n+m))</span>. Two pointers — <span class="ha">O(n)</span> (each pointer traverses the array once).`}
+],
+g:[["Sweep line","Events by coordinate + a left-to-right pass"],["Event","Segment start/end, a point, a query"],["Two pointers","l, r move only forward → O(n)"],["State","A maintained quantity (counter online / cats)"],["One-pass processing","Each event handled once"]],
+q:[
+{q:"What dominates the running time of a sweep line?",o:["Reading input","Sorting the events","Output","Memory"],c:1,e:"Usually O((n+m) log(n+m)) — sorting the events."},
+{q:"Why does two pointers run in O(n)?",o:["Binary search is used","Both pointers move only forward, ≤2n steps total","The array is sorted","Recursion"],c:1,e:"The pointers never roll back — a linear number of steps."},
+{q:"What is collected into the event list in a sweep line?",o:["Only points","Segment starts/ends and points/queries","Only segments","Hashes"],c:1,e:"All «interesting» moments: entries, exits, points/queries."}
+]}
+
+];
+</script>
+
+<!-- app -->
+<script>
+/* ═══════════════════════════════════════════
+   INTERACTIVE BEAR — cursor tracking + tassel sway
+═══════════════════════════════════════════ */
+(function(){
+  const stage = document.getElementById('bearStage');
+  const svg = document.getElementById('bearSvg');
+  const pL = document.getElementById('pL');
+  const pR = document.getElementById('pR');
+  const head = document.getElementById('bearHead');
+  const tassel = document.getElementById('tassel');
+  const bearAll = document.getElementById('bearAll');
+
+  if(!stage || !svg) return;
+
+  // Track viewport mouse, aim pupils/head at cursor
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+  });
+  // also support touch drag
+  window.addEventListener('touchmove', e=>{
+    if(e.touches[0]){ mx = e.touches[0].clientX; my = e.touches[0].clientY; }
+  }, {passive:true});
+
+  // scroll parallax: bear rises slightly
+  let scrollShift = 0;
+  window.addEventListener('scroll', ()=>{
+    const s = window.scrollY;
+    scrollShift = Math.min(200, s * .4);
+    bearAll.style.transform = `translateY(${-scrollShift*.6}px) rotate(${Math.sin(s/300)*4}deg)`;
+  });
+
+  function loop(){
+    // smooth follow
+    tx += (mx - tx) * .08;
+    ty += (my - ty) * .08;
+
+    const rect = svg.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    const dx = (tx - cx) / rect.width;
+    const dy = (ty - cy) / rect.height;
+
+    // pupils: limit to +-8px
+    const px = Math.max(-8, Math.min(8, dx * 18));
+    const py = Math.max(-6, Math.min(6, dy * 14));
+    pL.setAttribute('cx', 160 + px);
+    pL.setAttribute('cy', 128 + py);
+    pR.setAttribute('cx', 240 + px);
+    pR.setAttribute('cy', 128 + py);
+
+    // head tilts a tiny bit
+    const tiltX = Math.max(-8, Math.min(8, dx * 20));
+    const tiltY = Math.max(-5, Math.min(5, dy * 10));
+    head.style.transform = `translate(${tiltX*.4}px, ${tiltY*.4}px) rotate(${tiltX*.2}deg)`;
+
+    // tassel sways
+    const sway = Math.sin(Date.now()/400)*5 + dx*8;
+    tassel.style.transform = `rotate(${sway}deg)`;
+    tassel.style.transformOrigin = '246px 148px';
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ═══════════════════════════════════════════
+   CLOUD LAYOUT — spread 18 clouds across
+   a long vertical canvas, alternating sides
+═══════════════════════════════════════════ */
+const CLOUD_SHAPES = ['cloudShapeA','cloudShapeB','cloudShapeC','cloudShapeD'];
+const CLOUD_POSITIONS = [];
+
+function genCloudPositions(){
+  // pseudo-random but deterministic
+  const positions = [];
+  let y = 220;
+  // two "lanes" (cloud left edge, %), all clouds guaranteed on screen
+  const LANES = [10, 56];
+  for(let i=0; i<T.length; i++){
+    const lane = LANES[i % 2];
+    const jitter = Math.sin(i * 1.3) * 5;           // slight jitter ±5%
+    const left = Math.max(6, Math.min(60, lane + jitter));
+    positions.push({
+      top: y,
+      leftPct: left,
+      shape: CLOUD_SHAPES[i % 4],
+      dur: 7 + (i % 4) * 1.5,
+      delay: (i*0.3) % 3,
+      scale: .9 + ((i*13)%18)/45,    // 0.9..1.3
+      dx: 22 + (i % 3) * 9           // horizontal drift radius 22..40px
+    });
+    // stagger vertical distance
+    y += 190 + ((i*7) % 110);
+  }
+  return positions;
+}
+
+function renderClouds(){
+  const container = document.getElementById('cloudsContainer');
+  const positions = genCloudPositions();
+  CLOUD_POSITIONS.length = 0; CLOUD_POSITIONS.push(...positions);
+
+  const maxY = positions[positions.length-1].top + 300;
+  document.getElementById('cloudsSection').style.setProperty('--ch', maxY + 'px');
+
+  container.innerHTML = positions.map((p, i) => {
+    const t = T[i];
+    const titleShort = (t.t || '').length > 28 ? t.t.slice(0,26)+'…' : t.t;
+    const huedur = 10 + (i % 5) * 2;
+    const huedelay = (i * 0.7) % 5;
+    return `
+      <div class="cloud drift"
+           style="top:${p.top}px; left:${p.leftPct}%; transform-origin:center; --dur:${p.dur}s; --delay:${p.delay}s; --huedur:${huedur}s; --huedelay:${huedelay}s; --scale:${p.scale}; --dx:${p.dx}px;"
+           onclick="openReader(${i})">
+        <svg class="cloud-svg" viewBox="0 0 300 180" preserveAspectRatio="xMidYMid meet"><use href="#${p.shape}"/></svg>
+        <div class="cnum">${t.n}</div>
+        <div class="clabel">${titleShort}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* twinkling stars sprinkled between the clouds (fills the whole section) */
+function renderCloudStars(){
+  const layer = document.getElementById('cloudsStars');
+  if(!layer) return;
+  const h = parseInt(getComputedStyle(document.getElementById('cloudsSection')).height) || 4000;
+  const n = Math.round(h / 55);            // density scales with section height (kept light for smooth scroll)
+  let html = '';
+  for(let i=0; i<n; i++){
+    const top = (Math.random()*100).toFixed(2);
+    const left = (Math.random()*100).toFixed(2);
+    const sz = (1 + Math.random()*2.3).toFixed(1);
+    const op = (0.3 + Math.random()*0.5).toFixed(2);
+    const delay = (Math.random()*3.5).toFixed(2);
+    const dur = (2 + Math.random()*2.6).toFixed(2);
+    html += `<span class="cstar" style="top:${top}%;left:${left}%;width:${sz}px;height:${sz}px;--op:${op};animation-delay:${delay}s;animation-duration:${dur}s;"></span>`;
+  }
+  const glyphs = ['✦','✧','✶'];
+  for(let i=0; i<Math.round(n/5); i++){
+    const top = (Math.random()*100).toFixed(2);
+    const left = (Math.random()*100).toFixed(2);
+    const sz = (0.6 + Math.random()*1.2).toFixed(2);
+    const delay = (Math.random()*2.6).toFixed(2);
+    html += `<span class="csparkle" style="top:${top}%;left:${left}%;font-size:${sz}rem;animation-delay:${delay}s;">${glyphs[i%glyphs.length]}</span>`;
+  }
+  layer.innerHTML = html;
+}
+
+/* birds sprinkled behind clouds */
+function renderBirds(){
+  const layer = document.getElementById('birdsLayer');
+  let html = '';
+  for(let i=0; i<14; i++){
+    const top = 100 + i*240 + (i%3)*40;
+    const left = 5 + (i*23) % 85;
+    html += `<div class="bird" style="top:${top}px; left:${left}%; animation: drift ${5 + (i%3)*2}s ease-in-out infinite; animation-delay:${(i*.3)%2}s;">~  ^  ~</div>`;
+  }
+  layer.innerHTML = html;
+}
+
+/* stars in night footer */
+function renderStars(){
+  const layer = document.getElementById('starsLayer');
+  let html = '';
+  for(let i=0; i<60; i++){
+    const top = Math.random()*100;
+    const left = Math.random()*100;
+    const delay = Math.random()*3;
+    html += `<div class="star" style="top:${top}%; left:${left}%; animation-delay:${delay}s;"></div>`;
+  }
+  layer.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
+   READER — opens a ticket
+═══════════════════════════════════════════ */
+let currentTicket = 0;
+const visited = new Set();
+
+function esc(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function triggerCloudTransition(cb){
+  const overlay = document.getElementById('cloudTransition');
+  const shapes = ['cloudShapeA','cloudShapeB','cloudShapeC','cloudShapeD'];
+  overlay.innerHTML = Array.from({length:22},(_,i)=>{
+    const s = shapes[i%4];
+    const l = (Math.random()*115-8).toFixed(1);
+    const t = (Math.random()*115-8).toFixed(1);
+    const w = 320+Math.random()*260;
+    const delay = i*38;
+    return `<div class="ct-cloud" style="left:${l}%;top:${t}%;width:${w}px;height:${(w*.6).toFixed(0)}px;animation-delay:${delay}ms;">
+      <svg viewBox="0 0 300 180" width="100%" height="100%"><use href="#${s}"/></svg>
+    </div>`;
+  }).join('');
+  overlay.style.display='block';
+  overlay.style.opacity='0';
+  requestAnimationFrame(()=>{
+    overlay.style.transition='opacity .2s ease';
+    overlay.classList.add('ct-show');
+  });
+  setTimeout(()=>{
+    cb();
+    setTimeout(()=>{
+      overlay.classList.remove('ct-show');
+      setTimeout(()=>{ overlay.style.display='none'; overlay.innerHTML=''; }, 260);
+    }, 180);
+  }, 720);
+}
+
+function openReader(i){
+  triggerCloudTransition(()=>{
+    currentTicket = i;
+    visited.add(i);
+    updateProgress();
+    document.getElementById('reader').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    prepQuiz(i);
+    animateNext = true;
+    renderTicket(i);
+    buildStrip();
+    document.getElementById('reader').scrollTop = 0;
+  });
+}
+
+function closeReader(){
+  clearSims();
+  document.getElementById('reader').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function goTicket(i){
+  if(i<0 || i>=T.length) return;
+  currentTicket = i;
+  visited.add(i);
+  updateProgress();
+  prepQuiz(i);
+  animateNext = true;
+  renderTicket(i);
+  buildStrip();
+  document.getElementById('reader').scrollTop = 0;
+}
+
+function buildStrip(){
+  const s = document.getElementById('cloudStrip');
+  s.innerHTML = T.map((t,i) =>
+    `<button class="cs-btn ${i===currentTicket?'active':''}" onclick="goTicket(${i})" title="${t.t}">${t.n}</button>`
+  ).join('');
+  // scroll active into view
+  setTimeout(()=>{
+    const active = s.querySelector('.cs-btn.active');
+    if(active) active.scrollIntoView({inline:'center', block:'nearest'});
+  }, 50);
+}
+
+function updateProgress(){
+  document.getElementById('progressMeta').textContent = `${visited.size} / ${T.length}`;
+}
+
+/* state for quiz answers */
+const QA = {};            // QA[ticket][question] = chosen original option index
+const QSHUF = {};         // QSHUF[ticket][question] = display order of options (shuffled)
+
+/* on entering a ticket: reset answers and reshuffle options (correct one at a random spot) */
+function prepQuiz(i){
+  QA[i] = {};
+  QSHUF[i] = (T[i].q || []).map(q => {
+    const order = q.o.map((_, k) => k);
+    for(let a = order.length - 1; a > 0; a--){          // Fisher–Yates
+      const b = Math.floor(Math.random() * (a + 1));
+      [order[a], order[b]] = [order[b], order[a]];
+    }
+    return order;
+  });
+}
+
+/* brief / full view mode (persists across tickets) */
+let viewMode = 'brief';
+let animateNext = true;          // gate entrance stagger to ticket open / switch only
+function setMode(m){
+  if(viewMode===m) return;
+  viewMode = m;
+  animateNext = false;
+  renderTicket(currentTicket);
+  document.getElementById('reader').scrollTop = 0;
+}
+
+/* lightweight pseudocode highlighter */
+const HL_KW = new Set(['def','return','if','elif','else','for','while','in','range','and','or','not','None','True','False','break','continue','import','class','is','pass','lambda','print','len','max','min','map','int','input','split','sort','append','extend','pop','enumerate','pow','ord','self']);
+function hlCode(src){
+  // single-pass tokenizer (string | comment | number | identifier) — never
+  // re-scans its own inserted markup, and a '#' inside a string isn't a comment
+  const re = /('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|(#.*)|(\b\d+\b)|([A-Za-z_]\w*)/g;
+  return esc(src).split('\n').map(line =>
+    line.replace(re, (m, str, com, num, id) => {
+      if(str) return `<span class="t-str">${str}</span>`;
+      if(com) return `<span class="t-com">${com}</span>`;
+      if(num) return `<span class="t-num">${num}</span>`;
+      return HL_KW.has(id) ? `<span class="t-kw">${id}</span>` : id;
+    })
+  ).join('\n');
+}
+
+/* ═══════════════════════════════════════════
+   INTERACTIVE ALGORITHM SIMULATIONS
+═══════════════════════════════════════════ */
+let _activeSims = [];
+function clearSims(){ _activeSims.forEach(s => s.stop()); _activeSims = []; }
+
+function makeSim(host, def){
+  const card = document.createElement('div');
+  card.className = 'sim';
+  card.innerHTML = `
+    <div class="sim-h">${def.title}</div>
+    <div class="sim-desc">${def.desc}</div>
+    <div class="sim-ctrl">
+      <button class="sim-btn primary" data-a="step">Step</button>
+      <button class="sim-btn" data-a="auto">▶ Auto</button>
+      <button class="sim-btn" data-a="reset">Reset</button>
+    </div>
+    <div class="sim-stage"></div>
+    ${def.legend ? `<div class="sim-legend">${def.legend.map(([c,l])=>`<span class="sim-leg"><i class="dot ${c}"></i>${l}</span>`).join('')}</div>` : ''}
+    <div class="sim-status"></div>`;
+  host.appendChild(card);
+  const stage = card.querySelector('.sim-stage');
+  const statusEl = card.querySelector('.sim-status');
+  const autoBtn = card.querySelector('[data-a="auto"]');
+  const update = def.mount(stage);
+  const last = def.length - 1;
+  let idx = 0, timer = null;
+  function go(){ update(idx); statusEl.innerHTML = def.status(idx); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; autoBtn.textContent = '▶ Auto'; } }
+  function step(){ if(idx < last){ idx++; go(); } else stop(); }
+  function reset(){ stop(); idx = 0; go(); }
+  function auto(){
+    if(timer){ stop(); return; }
+    if(idx >= last){ idx = 0; go(); }
+    autoBtn.textContent = '⏸ Pause';
+    timer = setInterval(() => { idx < last ? step() : stop(); }, 750);
+  }
+  card.querySelector('[data-a="step"]').onclick = step;
+  autoBtn.onclick = auto;
+  card.querySelector('[data-a="reset"]').onclick = reset;
+  go();
+  _activeSims.push({ stop });
+}
+
+/* ── ticket 3: grasshopper (forward DP) ── */
+function simKuznechik(){
+  const dp = [0,1,1,2,4,7,13,24,44];   // 1-indexed, dp[1..8]
+  return {
+    title:'Simulation: grasshopper on the stairs',
+    desc:'Forward DP: dp[i] = dp[i−1] + dp[i−2] + dp[i−3]. Jumps of 1, 2, 3 steps. Green marks the transition terms.',
+    legend:[['cur','Current dp[i]'],['done','Terms / answer']],
+    length:8,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-arr">${[1,2,3,4,5,6,7,8].map(i=>`<div class="sim-cell empty"><span class="lab">i=${i}</span><span class="val"></span></div>`).join('')}</div>`;
+      const cells = [...stage.querySelectorAll('.sim-cell')];
+      return (f) => {
+        const upto = f === 0 ? 1 : f + 1;   // how much of dp is computed
+        const cur  = upto;
+        cells.forEach((c, idx) => {
+          const i = idx + 1;
+          c.classList.remove('cur','done','src','empty');
+          if(i <= upto){ c.querySelector('.val').textContent = dp[i]; }
+          else { c.querySelector('.val').textContent = ''; c.classList.add('empty'); }
+          if(i === cur && i <= upto) c.classList.add('cur');
+          else if(f > 0 && i < cur && i >= cur - 3) c.classList.add('done');
+        });
+      };
+    },
+    status(f){
+      const cur = f === 0 ? 1 : f + 1;
+      if(f === 0) return 'Base: <b>dp[1] = 1</b> — one way to stay at the start.';
+      if(f < 7) return `dp[${cur}] = dp[${cur-1}] + dp[${cur-2}]${cur-3>=1?' + dp['+(cur-3)+']':''} = <b>${dp[cur]}</b>.`;
+      return 'Answer: number of ways to reach step 8 — <b>44</b>.';
+    }
+  };
+}
+
+/* ── ticket 3: turtle (grid DP) ── */
+function simTurtle(){
+  const dp = [[1,4,5,7],[2,9,10,11],[6,11,12,15]];
+  const R = 3, C = 4, order = [];
+  for(let i=0;i<R;i++) for(let j=0;j<C;j++) order.push([i,j]);
+  return {
+    title:'Simulation: turtle on the board',
+    desc:'dp[i][j] = max(top, left) + cost[i][j]. Yellow is the current cell, blue the source cells.',
+    legend:[['cur','Current'],['src','Sources'],['done','Computed']],
+    length: order.length,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-grid" style="grid-template-columns:repeat(${C},minmax(0,1fr))">${order.map(()=>`<div class="sim-cell empty"><span class="val"></span></div>`).join('')}</div>`;
+      const cells = [...stage.querySelectorAll('.sim-cell')];
+      const at = (i,j) => cells[i*C + j];
+      return (f) => {
+        cells.forEach(c => c.classList.remove('cur','src','done','empty'));
+        for(let k=0;k<order.length;k++){
+          const [i,j] = order[k];
+          if(k <= f){ at(i,j).querySelector('.val').textContent = dp[i][j]; at(i,j).classList.add('done'); }
+          else { at(i,j).querySelector('.val').textContent = ''; at(i,j).classList.add('empty'); }
+        }
+        const [ci,cj] = order[f];
+        at(ci,cj).classList.remove('done'); at(ci,cj).classList.add('cur');
+        if(f > 0){
+          if(ci > 0){ at(ci-1,cj).classList.remove('done'); at(ci-1,cj).classList.add('src'); }
+          if(cj > 0){ at(ci,cj-1).classList.remove('done'); at(ci,cj-1).classList.add('src'); }
+        }
+      };
+    },
+    status(f){
+      const [i,j] = order[f];
+      if(f === 0) return 'Base: <b>dp[0][0] = 1</b> (the starting cell).';
+      if(f < order.length - 1) return `dp[${i}][${j}] = max(top, left) + cost = <b>${dp[i][j]}</b>.`;
+      return 'Maximum coins to the bottom-right corner — <b>15</b>.';
+    }
+  };
+}
+
+/* ── ticket 8: building a segment tree (maximum) ── */
+function simSegtree(){
+  const a = [3,1,4,1,5,9,2,6], n = 8;
+  const t = new Array(16).fill(0);
+  for(let i=0;i<n;i++) t[8+i] = a[i];
+  for(let i=7;i>=1;i--) t[i] = Math.max(t[2*i], t[2*i+1]);
+  const levels = [[1],[2,3],[4,5,6,7],[8,9,10,11,12,13,14,15]];
+  const seq = [];
+  for(let i=8;i<=15;i++) seq.push({node:i, leaf:true});
+  for(let i=7;i>=1;i--) seq.push({node:i, leaf:false});
+  return {
+    title:'Simulation: building a segment tree (maximum)',
+    desc:'Bottom-up: leaves are array elements, an internal node = max(left child, right child). Yellow is the current node, blue its children 2v and 2v+1.',
+    legend:[['cur','Current node'],['src','Children (2v, 2v+1)'],['done','Done']],
+    length: seq.length,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-tree">${levels.map(row=>`<div class="sim-row">${row.map(v=>`<div class="sim-cell empty" data-v="${v}"><span class="lab">t${v}</span><span class="val"></span></div>`).join('')}</div>`).join('')}</div>`;
+      const map = {}; stage.querySelectorAll('.sim-cell').forEach(c => map[c.dataset.v] = c);
+      return (f) => {
+        const placed = new Set();
+        for(let k=0;k<=f;k++) placed.add(seq[k].node);
+        Object.entries(map).forEach(([v,c]) => {
+          c.classList.remove('cur','src','done','empty');
+          if(placed.has(+v)){ c.querySelector('.val').textContent = t[+v]; c.classList.add('done'); }
+          else { c.querySelector('.val').textContent = ''; c.classList.add('empty'); }
+        });
+        const cur = seq[f];
+        map[cur.node].classList.remove('done'); map[cur.node].classList.add('cur');
+        if(!cur.leaf){
+          [2*cur.node, 2*cur.node+1].forEach(ch => { map[ch].classList.remove('done'); map[ch].classList.add('src'); });
+        }
+      };
+    },
+    status(f){
+      const cur = seq[f];
+      if(cur.leaf) return `Leaf: t[${cur.node}] = a[${cur.node-8}] = <b>${t[cur.node]}</b>.`;
+      if(cur.node > 1) return `t[${cur.node}] = max(t[${2*cur.node}], t[${2*cur.node+1}]) = <b>${t[cur.node]}</b>.`;
+      return `Root done: maximum of the whole array — <b>${t[1]}</b>.`;
+    }
+  };
+}
+
+/* ── ticket 10: insert into a binary search tree ── */
+function simBST(){
+  const keys = [5,3,8,1,4,7,9];                 // insert in this order
+  const slot = {5:[0,0],3:[1,0],8:[1,1],1:[2,0],4:[2,1],7:[2,2],9:[2,3]};
+  const rows = [[5],[3,8],[1,4,7,9]];
+  const paths = {
+    5:'root',
+    3:'3 < 5 → left → leaf',
+    8:'8 > 5 → right → leaf',
+    1:'1 < 5 → left, 1 < 3 → left → leaf',
+    4:'4 < 5 → left, 4 > 3 → right → leaf',
+    7:'7 > 5 → right, 7 < 8 → left → leaf',
+    9:'9 > 5 → right, 9 > 8 → right → leaf'
+  };
+  return {
+    title:'Simulation: building a BST by inserts',
+    desc:'Insert keys 5, 3, 8, 1, 4, 7, 9. Descend from the root: smaller — left, larger — right, until an empty spot. Yellow is the just-inserted node.',
+    legend:[['cur','Just inserted'],['done','In the tree']],
+    length: keys.length,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-tree">${rows.map(row=>`<div class="sim-row">${row.map(v=>`<div class="sim-cell empty" data-v="${v}"><span class="val">${v}</span></div>`).join('')}</div>`).join('')}</div>`;
+      const map = {}; stage.querySelectorAll('.sim-cell').forEach(c => map[c.dataset.v] = c);
+      return (f) => {
+        Object.values(map).forEach(c => c.classList.remove('cur','done','empty') || c.classList.add('empty'));
+        for(let k=0;k<=f;k++){ const v = keys[k]; map[v].classList.remove('empty'); map[v].classList.add('done'); }
+        map[keys[f]].classList.remove('done'); map[keys[f]].classList.add('cur');
+      };
+    },
+    status(f){
+      const v = keys[f];
+      if(f === 0) return `Insert <b>5</b> — the tree is empty, 5 becomes the root.`;
+      if(f < keys.length - 1) return `Insert <b>${v}</b>: ${paths[v]}.`;
+      return `Done: a balanced BST of 7 keys, height <b>O(log n)</b>.`;
+    }
+  };
+}
+
+/* ── ticket 18: two pointers (longest subarray with sum ≤ k) ── */
+function simTwoPtr(){
+  const a = [2,1,5,1,3,2], k = 7;
+  // precompute window [left,right], sum, best after each right step
+  const frames = [];
+  let left = 0, sum = 0, best = 0;
+  for(let right=0; right<a.length; right++){
+    sum += a[right];
+    while(sum > k){ sum -= a[left]; left++; }
+    best = Math.max(best, right - left + 1);
+    frames.push({left, right, sum, best});
+  }
+  return {
+    title:'Simulation: two pointers (longest subarray with sum ≤ k)',
+    desc:`Array [2, 1, 5, 1, 3, 2], k = ${k}. The right pointer moves forward; while the window sum > k, move the left one. Blue is the current window, yellow the right pointer.`,
+    legend:[['cur','Right pointer'],['src','Window [left, right]'],['done','—']],
+    length: frames.length,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-arr">${a.map((v,i)=>`<div class="sim-cell" data-i="${i}"><span class="lab">i=${i}</span><span class="val">${v}</span></div>`).join('')}</div>`;
+      const cells = [...stage.querySelectorAll('.sim-cell')];
+      return (f) => {
+        const {left, right} = frames[f];
+        cells.forEach((c, i) => {
+          c.classList.remove('cur','src','done','empty');
+          if(i >= left && i <= right) c.classList.add('src');
+          if(i === right) { c.classList.remove('src'); c.classList.add('cur'); }
+        });
+      };
+    },
+    status(f){
+      const s = frames[f];
+      const len = s.right - s.left + 1;
+      const tail = f === frames.length - 1 ? ` Answer — the longest subarray: <b>${s.best}</b>.` : '';
+      return `right=${s.right}: window [${s.left}, ${s.right}], sum=${s.sum} ≤ ${7}, length=${len}, best=<b>${s.best}</b>.${tail}`;
+    }
+  };
+}
+
+/* ── ticket 6: LCS of two strings (filling the table) ── */
+function simLCS(){
+  const x = "ABCB", y = "BDCB", m = x.length, n = y.length;
+  const dp = Array.from({length:m+1}, () => new Array(n+1).fill(0));
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++){
+    if(x[i-1] === y[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+    else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+  }
+  const order = []; for(let i=1;i<=m;i++) for(let j=1;j<=n;j++) order.push([i,j]);
+  return {
+    title:'Simulation: LCS of two strings (filling the table)',
+    desc:'x = «ABCB», y = «BDCB». If the characters match — dp[i][j] = dp[i−1][j−1] + 1 (diagonal). Otherwise — max(top, left). Blue marks the source cells.',
+    legend:[['cur','Current dp[i][j]'],['src','Sources'],['done','Computed']],
+    length: order.length,
+    mount(stage){
+      let html = `<div class="sim-grid" style="grid-template-columns:repeat(${n+2},minmax(0,1fr))">`;
+      html += `<div class="sim-cell hdr"></div><div class="sim-cell hdr"><span class="val">∅</span></div>`;
+      for(let j=0;j<n;j++) html += `<div class="sim-cell hdr"><span class="val">${y[j]}</span></div>`;
+      for(let i=0;i<=m;i++){
+        html += `<div class="sim-cell hdr"><span class="val">${i===0?'∅':x[i-1]}</span></div>`;
+        for(let j=0;j<=n;j++) html += `<div class="sim-cell" data-r="${i}" data-c="${j}"><span class="val"></span></div>`;
+      }
+      html += `</div>`;
+      stage.innerHTML = html;
+      const cells = {}; stage.querySelectorAll('.sim-cell[data-r]').forEach(c => cells[c.dataset.r+','+c.dataset.c] = c);
+      const at = (i,j) => cells[i+','+j];
+      return (f) => {
+        Object.values(cells).forEach(c => c.classList.remove('cur','src','done','empty'));
+        for(let i=0;i<=m;i++) for(let j=0;j<=n;j++) if(i===0||j===0){ at(i,j).querySelector('.val').textContent = '0'; at(i,j).classList.add('done'); }
+        for(let k=0;k<order.length;k++){
+          const [i,j] = order[k];
+          if(k <= f){ at(i,j).querySelector('.val').textContent = dp[i][j]; at(i,j).classList.add('done'); }
+          else { at(i,j).querySelector('.val').textContent = ''; at(i,j).classList.add('empty'); }
+        }
+        const [ci,cj] = order[f]; at(ci,cj).classList.remove('done'); at(ci,cj).classList.add('cur');
+        if(x[ci-1] === y[cj-1]){ at(ci-1,cj-1).classList.remove('done'); at(ci-1,cj-1).classList.add('src'); }
+        else {
+          at(ci-1,cj).classList.remove('done'); at(ci-1,cj).classList.add('src');
+          at(ci,cj-1).classList.remove('done'); at(ci,cj-1).classList.add('src');
+        }
+      };
+    },
+    status(f){
+      const [i,j] = order[f]; const match = x[i-1] === y[j-1];
+      if(f < order.length - 1) return match
+        ? `'${x[i-1]}' = '${y[j-1]}' → dp[${i}][${j}] = dp[${i-1}][${j-1}] + 1 = <b>${dp[i][j]}</b>.`
+        : `'${x[i-1]}' ≠ '${y[j-1]}' → dp[${i}][${j}] = max(top, left) = <b>${dp[i][j]}</b>.`;
+      return `LCS length of «ABCB» and «BDCB» — <b>${dp[m][n]}</b> (it is «BCB»).`;
+    }
+  };
+}
+
+/* ── ticket 13: prefix sum in a Fenwick tree ── */
+function simFenwick(){
+  const a = [1,2,3,4,5,6,7,8], n = a.length;
+  const tree = a.slice();
+  for(let i=0;i<n;i++){ const j = i | (i+1); if(j < n) tree[j] += tree[i]; }
+  const R = 6; const steps = []; let r = R, s = 0;
+  while(r >= 0){ s += tree[r]; steps.push({ r, add: tree[r], sum: s, lo: (r & (r+1)) }); r = (r & (r+1)) - 1; }
+  return {
+    title:'Simulation: prefix sum in a Fenwick tree',
+    desc:'tree[i] holds the sum a[F(i)..i], where F(i) = i & (i+1). query(6) = a[0]+…+a[6]: take tree[r] and jump r → (r & (r+1)) − 1 while r ≥ 0.',
+    legend:[['cur','Current r'],['done','Counted tree[r]']],
+    length: steps.length,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-arr">${tree.map((v,i)=>`<div class="sim-cell" data-i="${i}"><span class="lab">tree${i}</span><span class="val">${v}</span></div>`).join('')}</div>`;
+      const cells = [...stage.querySelectorAll('.sim-cell')];
+      return (f) => {
+        cells.forEach(c => c.classList.remove('cur','src','done','empty'));
+        for(let k=0;k<=f;k++) cells[steps[k].r].classList.add('done');
+        cells[steps[f].r].classList.remove('done'); cells[steps[f].r].classList.add('cur');
+      };
+    },
+    status(f){
+      const st = steps[f];
+      const tail = f === steps.length - 1
+        ? ` Total: a[0..6] = <b>${st.sum}</b>.`
+        : ` Jump: r → (${st.r} & ${st.r+1}) − 1 = ${(st.r & (st.r+1)) - 1}.`;
+      return `tree[${st.r}] = ${st.add} covers a[${st.lo}..${st.r}]; accumulated sum = <b>${st.sum}</b>.${tail}`;
+    }
+  };
+}
+
+/* ── ticket 14: range-minimum query with a sparse table ── */
+function simSparse(){
+  const a = [5,2,4,7,6,3,8,1], L = 2, R = 6;
+  const len = R - L + 1, k = Math.floor(Math.log2(len)), span = 1 << k;
+  const b1 = [L, L+span-1], b2 = [R-span+1, R];
+  const min1 = Math.min(...a.slice(b1[0], b1[1]+1));
+  const min2 = Math.min(...a.slice(b2[0], b2[1]+1));
+  const ans = Math.min(min1, min2);
+  return {
+    title:'Simulation: range-minimum query with a sparse table',
+    desc:`a = [5, 2, 4, 7, 6, 3, 8, 1]. Minimum on [${L}, ${R}] in O(1): length = ${len}, k = ⌊log₂⌋ = ${k}, 2^k = ${span}. Cover the range with two overlapping blocks of length ${span}.`,
+    legend:[['cur','Query [l, r]'],['src','Block of length 2^k'],['done','Answer']],
+    length: 4,
+    mount(stage){
+      stage.innerHTML = `<div class="sim-arr">${a.map((v,i)=>`<div class="sim-cell" data-i="${i}"><span class="lab">i=${i}</span><span class="val">${v}</span></div>`).join('')}</div>`;
+      const cells = [...stage.querySelectorAll('.sim-cell')];
+      const mark = (lo,hi,cls) => { for(let i=lo;i<=hi;i++) cells[i].classList.add(cls); };
+      return (f) => {
+        cells.forEach(c => c.classList.remove('cur','src','done','empty'));
+        if(f === 0) mark(L, R, 'cur');
+        else if(f === 1) mark(b1[0], b1[1], 'src');
+        else if(f === 2) mark(b2[0], b2[1], 'src');
+        else {
+          mark(b1[0], b1[1], 'src'); mark(b2[0], b2[1], 'src');
+          cells.forEach((c,i) => { if(i>=L && i<=R && a[i]===ans){ c.classList.remove('src'); c.classList.add('done'); } });
+        }
+      };
+    },
+    status(f){
+      if(f === 0) return `Query: minimum on [${L}, ${R}] (length ${len}). Take k = ⌊log₂ ${len}⌋ = ${k}, block length 2^${k} = ${span}.`;
+      if(f === 1) return `Left block st[${k}][${L}] = min a[${b1[0]}..${b1[1]}] = <b>${min1}</b>.`;
+      if(f === 2) return `Right block st[${k}][${b2[0]}] = min a[${b2[0]}..${b2[1]}] = <b>${min2}</b>.`;
+      return `Answer = min(${min1}, ${min2}) = <b>${ans}</b>. Overlapping blocks are harmless: min(x, x) = x.`;
+    }
+  };
+}
+
+/* which tickets get simulations (0-based index) */
+const SIM_BUILDERS = {
+  2:  [simKuznechik, simTurtle],   // ticket 3 — dynamic programming
+  5:  [simLCS],                    // ticket 6 — LCS of two strings
+  7:  [simSegtree],                // ticket 8 — segment tree (maximum)
+  9:  [simBST],                    // ticket 10 — binary search tree
+  12: [simFenwick],                // ticket 13 — Fenwick tree
+  13: [simSparse],                 // ticket 14 — sparse table
+  17: [simTwoPtr]                  // ticket 18 — two pointers
+};
+
+function renderTicket(i){
+  clearSims();                                    // stop any running simulation timers
+  const t = T[i];
+  const anim = animateNext; animateNext = true;   // consume the flag (default on)
+  document.getElementById('rChip').textContent = `TICKET ${t.n}`;
+  const wrap = document.getElementById('ticketWrap');
+  wrap.classList.toggle('anim', anim);
+
+  let h = `<div class="ticket-head">
+    <span class="ticket-num">TICKET ${t.n} / ${T.length}</span>
+    <h2 class="ticket-title">${t.t}</h2>
+  </div>`;
+
+  if(t.q_text){
+    h += `<div class="ticket-question-block">
+      <div class="ticket-question-label">◈ Exam question</div>
+      <div class="ticket-question-text">${t.q_text}</div>
+    </div>`;
+  }
+
+  // ── Brief / Full toggle ──
+  if(t.brief){
+    h += `<div class="modebar">
+      <div class="modebar-label">Answer depth</div>
+      <div class="seg">
+        <button class="seg-btn ${viewMode==='brief'?'active':''}" onclick="setMode('brief')">⚡ Brief</button>
+        <button class="seg-btn ${viewMode==='full'?'active':''}" onclick="setMode('full')">📖 Full</button>
+      </div>
+    </div>`;
+  }
+
+  if(t.brief && viewMode==='brief'){
+    h += `<div class="brief">${t.brief.replace(/\n/g,'<br>')}</div>`;
+    h += `<div class="brief-more" onclick="setMode('full')">Need pseudocode and proofs? <b>Open the full breakdown →</b></div>`;
+  } else {
+    t.s.forEach(s => {
+      h += `<div class="sec"><div class="sec-h">${s.h}</div>`;
+      if(s.b) h += `<div class="sec-b">${s.b.replace(/\n/g,'<br>')}</div>`;
+      if(s.c) h += `<pre class="code"><span class="code-bar"><i></i><i></i><i></i><b>pseudocode</b></span><code>${hlCode(s.c)}</code></pre>`;
+      if(s.x){
+        h += `<table class="cxt"><thead><tr>${s.x.hd.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+        s.x.rw.forEach(r => { h += `<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`; });
+        h += '</tbody></table>';
+      }
+      h += '</div>';
+    });
+  }
+
+  if(SIM_BUILDERS[i]) h += `<div id="simHost"></div>`;   // interactive visualizers mount here
+
+  if(t.g && t.g.length){
+    h += `<div class="gloss"><div class="gloss-t">◈ Terminology & notation</div>`;
+    t.g.forEach(([k,v]) => {
+      h += `<div class="gloss-row"><span class="gloss-k">${k}</span><span class="gloss-v">${v}</span></div>`;
+    });
+    h += '</div>';
+  }
+
+  if(t.q && t.q.length){
+    const ans = QA[i] || {};
+    const shuf = QSHUF[i] || t.q.map(q => q.o.map((_,k)=>k));   // display order of options
+    h += `<div class="quiz"><div class="quiz-title">✦ Quick check</div>`;
+    t.q.forEach((q,qi) => {
+      const done = ans[qi] !== undefined;
+      const order = shuf[qi] || q.o.map((_,k)=>k);
+      h += `<div class="qblock"><div class="qqtext">${qi+1}. ${q.q}</div><div class="qopts">`;
+      order.forEach((oi, pos) => {                 // pos = on-screen position, oi = original index
+        let cls = 'qopt';
+        if(done){
+          if(oi === q.c) cls += ' correct';
+          else if(oi === ans[qi] && ans[qi] !== q.c) cls += ' wrong';
+          else cls += ' reveal';
+        }
+        h += `<button class="${cls}" onclick="ansQ(${i},${qi},${oi})" ${done?'disabled':''}>
+          <span class="qletter">${String.fromCharCode(65+pos)}</span><span>${q.o[oi]}</span></button>`;
+      });
+      h += '</div>';
+      if(done){
+        const ok = ans[qi] === q.c;
+        h += `<div class="qfb ${ok?'correct':'wrong'} show">${ok?'✓ Correct. ':'✗ Wrong. '}${q.e}</div>`;
+      }
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  h += `<div class="arrows">
+    <button class="arrow-btn" onclick="goTicket(${i-1})" ${i===0?'disabled':''}>← Previous</button>
+    <button class="arrow-btn" onclick="goTicket(${i+1})" ${i===T.length-1?'disabled':''}>Next →</button>
+  </div>`;
+
+  wrap.innerHTML = h;
+
+  // mount interactive simulations for this ticket (if any)
+  const simHost = document.getElementById('simHost');
+  if(simHost && SIM_BUILDERS[i]) SIM_BUILDERS[i].forEach(b => makeSim(simHost, b()));
+}
+
+/* shooting star flying top-right → bottom-left, fired on a correct answer */
+function spawnShootingStar(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const s = document.createElement('div');
+  s.className = 'shoot';
+  s.style.top = (Math.random()*30 - 8).toFixed(1) + 'vh';   // vary the diagonal a bit
+  document.body.appendChild(s);
+  s.addEventListener('animationend', () => s.remove());
+}
+
+function ansQ(ti, qi, oi){
+  if(!QA[ti]) QA[ti] = {};
+  QA[ti][qi] = oi;
+  if(oi === T[ti].q[qi].c) spawnShootingStar();   // correct answer → shooting star
+  animateNext = false;
+  renderTicket(ti);
+}
+
+/* keyboard nav */
+window.addEventListener('keydown', e => {
+  if(!document.getElementById('reader').classList.contains('open')) return;
+  if(e.key === 'Escape') closeReader();
+  if(e.key === 'ArrowLeft') goTicket(currentTicket - 1);
+  if(e.key === 'ArrowRight') goTicket(currentTicket + 1);
+});
+
+/* hero star field + sparkles — generated for a denser night sky */
+function renderHeroFx(){
+  const fx = document.getElementById('heroFx');
+  if(!fx) return;
+  let html = '';
+  // tiny twinkling star dots (count kept modest for smooth scrolling)
+  for(let i=0; i<42; i++){
+    const top = (Math.random()*100).toFixed(2);
+    const left = (Math.random()*100).toFixed(2);
+    const sz = (1 + Math.random()*2.4).toFixed(1);
+    const delay = (Math.random()*3.5).toFixed(2);
+    const dur = (2 + Math.random()*2.5).toFixed(2);
+    const op = (0.35 + Math.random()*0.5).toFixed(2);
+    html += `<span class="hstar" style="top:${top}%;left:${left}%;width:${sz}px;height:${sz}px;--op:${op};animation-delay:${delay}s;animation-duration:${dur}s;"></span>`;
+  }
+  // bigger four-point sparkles
+  const glyphs = ['✦','✧','✦','✶'];
+  for(let i=0; i<16; i++){
+    const top = (Math.random()*100).toFixed(2);
+    const left = (Math.random()*100).toFixed(2);
+    const sz = (0.7 + Math.random()*1.5).toFixed(2);
+    const delay = (Math.random()*2.6).toFixed(2);
+    html += `<span class="hsparkle" style="top:${top}%;left:${left}%;font-size:${sz}rem;animation-delay:${delay}s;">${glyphs[i%glyphs.length]}</span>`;
+  }
+  fx.innerHTML = html;
+}
+
+/* pause background animations during scroll, resume shortly after it stops */
+let _scrollTO = null;
+window.addEventListener('scroll', () => {
+  if(!document.body.classList.contains('scrolling')) document.body.classList.add('scrolling');
+  clearTimeout(_scrollTO);
+  _scrollTO = setTimeout(() => document.body.classList.remove('scrolling'), 160);
+}, {passive:true});
+
+/* init */
+renderHeroFx();
+renderClouds();
+renderCloudStars();
+renderStars();
+
+/* open via URL hash */
+if(location.hash && /^#b(\d+)$/.test(location.hash)){
+  const i = parseInt(location.hash.match(/^#b(\d+)$/)[1],10) - 1;
+  if(i>=0 && i<T.length) openReader(i);
+}
+</script>
+
+</body>
+</html>
